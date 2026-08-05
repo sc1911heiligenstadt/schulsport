@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>🏫 Schulsport</title>
+<meta name="theme-color" content="#1a56a0" />
+<link rel="stylesheet" href="style.css?v=1.0" />
+</head>
+<body>
+
+<header>
+  <h1>🏫 Schulsport</h1>
+  <a href="https://sc1911heiligenstadt.github.io/ToolsUebersicht/" class="back-to-dashboard">← Zurück zum Dashboard</a>
+  <div class="header-right">
+    <span class="header-user" id="header-user"></span>
+    <img class="header-logo" src="https://sc1911heiligenstadt.github.io/logo.svg" alt="1. SC 1911 e.V. Heilbad Heiligenstadt" />
+  </div>
+</header>
+
+<!-- Verbindungs-Screen -->
+<div class="connect-screen" id="connect-screen">
+  <div class="card" id="cloud-login-section">
+    <h2>Anmeldung erforderlich</h2>
+    <p class="muted">
+      Der Schulsport-Planer liegt in der Vereins-Nextcloud. Melde dich einmalig in der
+      <strong>Tools-Übersicht</strong> an – danach wird diese Seite automatisch
+      geladen, ganz ohne Zugangsdaten oder App-Passwort auf diesem Gerät.
+      Funktioniert auch mobil.
+    </p>
+    <div class="btn-row" style="justify-content:flex-start;">
+      <a class="btn" href="https://sc1911heiligenstadt.github.io/ToolsUebersicht/">Zur Tools-Übersicht &amp; anmelden</a>
+    </div>
+    <p class="muted" id="cloud-error" style="display:none; color:#c0392b; margin-top:12px;"></p>
+  </div>
+</div>
+
+<!-- App -->
+<div id="app-shell" style="display:none;">
+  <nav>
+    <button data-tab="woche" class="active">Woche</button>
+    <button data-tab="melden">Melden <span class="nav-zaehler" id="nav-melden-zaehler" style="display:none;"></span></button>
+    <button data-tab="massnahmen">Maßnahmen</button>
+    <button data-tab="nachweise" id="nav-nachweise" style="display:none;">Nachweise</button>
+    <button data-tab="uebersicht">Übersicht</button>
+    <div class="nav-right">
+      <button data-tab="administrieren" id="nav-administrieren" style="display:none;">Administrieren</button>
+      <button data-tab="info">Info</button>
+    </div>
+  </nav>
+  <div class="save-status" id="save-status"></div>
+  <main>
+
+    <!-- ---------- Woche ---------- -->
+    <section class="tab-section active" id="tab-woche">
+
+      <div class="card" id="leerstand-card" style="display:none;">
+        <h2>Noch nichts angelegt</h2>
+        <p class="muted">
+          Es sind noch keine Schulen und Maßnahmen hinterlegt. Lege im Reiter
+          „Administrieren“ zuerst die Schule und ihren Ort an, danach im Reiter
+          „Maßnahmen“ die erste AG. Ferien und Feiertage für Thüringen sind
+          bereits vorbereitet.
+        </p>
+      </div>
+
+      <div class="card" id="meine-offenen-card" style="display:none;">
+        <div class="card-header-row">
+          <h2 id="meine-offenen-titel">Deine Meldungen</h2>
+          <button type="button" class="btn small" id="btn-zu-melden">Zum Melden</button>
+        </div>
+        <div id="meine-offenen-inhalt"></div>
+      </div>
+
+      <div class="card editor-only" id="offene-gesamt-card" style="display:none;">
+        <div class="card-header-row">
+          <h2>Offene Meldungen</h2>
+          <button type="button" class="btn secondary small" id="btn-erinnerung-alle">Alle erinnern</button>
+        </div>
+        <p class="muted">Termine, die stattgefunden haben, zu denen aber noch keine Rückmeldung vorliegt — älteste zuerst.</p>
+        <div id="offene-gesamt-inhalt"></div>
+      </div>
+
+      <div class="card">
+        <div class="wochen-nav">
+          <button type="button" class="btn secondary small" id="btn-woche-zurueck" aria-label="Vorherige Woche">‹</button>
+          <div class="wochen-titel">
+            <strong id="wochen-label"></strong>
+            <span class="muted" id="wochen-zeitraum"></span>
+          </div>
+          <button type="button" class="btn secondary small" id="btn-woche-vor" aria-label="Nächste Woche">›</button>
+          <button type="button" class="btn secondary small" id="btn-woche-heute">Diese Woche</button>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="filter-schule">Schule</label>
+            <select id="filter-schule"><option value="">Alle Schulen</option></select>
+          </div>
+          <div class="form-field">
+            <label for="filter-person">Übungsleiter</label>
+            <select id="filter-person"><option value="">Alle</option></select>
+          </div>
+          <div class="form-field">
+            <label for="filter-typ">Art</label>
+            <select id="filter-typ">
+              <option value="">AGs und Camps</option>
+              <option value="ag">nur AGs</option>
+              <option value="camp">nur Camps</option>
+            </select>
+          </div>
+        </div>
+        <p class="muted" id="wochen-hinweis"></p>
+      </div>
+
+      <div id="wochen-ansicht"></div>
+    </section>
+
+    <!-- ---------- Melden ---------- -->
+    <section class="tab-section" id="tab-melden">
+      <div class="card">
+        <h2>Termine melden</h2>
+        <p class="muted" id="melden-erklaerung">
+          Nach jeder Einheit eintragen, ob sie stattgefunden hat und wie viele Kinder da waren.
+        </p>
+        <div class="subnav" id="melden-filter">
+          <button type="button" data-mf="offen" class="active">Offen</button>
+          <button type="button" data-mf="kommend">Kommend</button>
+          <button type="button" data-mf="alle">Alle</button>
+        </div>
+      </div>
+      <div id="melden-liste"></div>
+    </section>
+
+    <!-- ---------- Maßnahmen ---------- -->
+    <section class="tab-section" id="tab-massnahmen">
+      <div class="card">
+        <div class="card-header-row">
+          <h2>AGs und Camps</h2>
+          <div class="btn-row editor-only" style="margin:0;">
+            <button type="button" class="btn success small" id="btn-neue-ag">+ Neue AG</button>
+            <button type="button" class="btn success small" id="btn-neues-camp">+ Neues Camp</button>
+          </div>
+        </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="mf-schule">Schule</label>
+            <select id="mf-schule"><option value="">Alle Schulen</option></select>
+          </div>
+          <div class="form-field">
+            <label for="mf-schuljahr">Schuljahr</label>
+            <select id="mf-schuljahr"></select>
+          </div>
+          <div class="form-field">
+            <label for="mf-status">Status</label>
+            <select id="mf-status">
+              <option value="">Alle</option>
+              <option value="laufend">Laufend</option>
+              <option value="geplant">Geplant</option>
+              <option value="beendet">Beendet</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div id="massnahmen-liste"></div>
+    </section>
+
+    <!-- ---------- Nachweise ---------- -->
+    <section class="tab-section" id="tab-nachweise">
+      <div class="card">
+        <h2>Durchführungsnachweis erstellen</h2>
+        <p class="muted">
+          Zeitraum und Maßnahme wählen. Der Nachweis friert die Zahlen ein — spätere
+          Korrekturen ändern ein bereits bestätigtes Dokument nicht mehr.
+        </p>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="nw-massnahme">Maßnahme</label>
+            <select id="nw-massnahme"></select>
+          </div>
+          <div class="form-field">
+            <label for="nw-von">Von</label>
+            <input type="date" id="nw-von" />
+          </div>
+          <div class="form-field">
+            <label for="nw-bis">Bis</label>
+            <input type="date" id="nw-bis" />
+          </div>
+        </div>
+        <div id="nw-vorschau"></div>
+        <div class="btn-row" style="justify-content:flex-start;">
+          <button type="button" class="btn secondary" id="btn-nw-pdf">PDF Durchführungsnachweis</button>
+          <button type="button" class="btn secondary" id="btn-nw-sammel">PDF Sammelübersicht</button>
+          <button type="button" class="btn success" id="btn-nw-freigabe">Zur Bestätigung an die Schule</button>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2>Ausgestellte Nachweise</h2>
+        <div class="empty-state" id="nw-liste-leer" style="display:none;">Es wurde noch kein Nachweis ausgestellt.</div>
+        <div id="nw-liste"></div>
+      </div>
+    </section>
+
+    <!-- ---------- Übersicht ---------- -->
+    <section class="tab-section" id="tab-uebersicht">
+      <div class="card">
+        <h2>Kennzahlen</h2>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="ue-von">Von</label>
+            <input type="date" id="ue-von" />
+          </div>
+          <div class="form-field">
+            <label for="ue-bis">Bis</label>
+            <input type="date" id="ue-bis" />
+          </div>
+          <div class="form-field">
+            <label for="ue-schuljahr">Schnellwahl</label>
+            <select id="ue-schuljahr"></select>
+          </div>
+        </div>
+      </div>
+      <div id="uebersicht-inhalt"></div>
+    </section>
+
+    <!-- ---------- Administrieren ---------- -->
+    <section class="tab-section" id="tab-administrieren">
+      <div class="card">
+        <h2>Administrieren</h2>
+        <p class="muted">Schulen, Orte, Ferienzeiten und Ausfallgründe pflegen sowie Schuljahre abschließen.</p>
+        <div class="subnav" id="admin-subnav">
+          <button type="button" data-adm="schulen" class="active">Schulen</button>
+          <button type="button" data-adm="orte">Orte</button>
+          <button type="button" data-adm="sperrtage">Ferien &amp; Feiertage</button>
+          <button type="button" data-adm="gruende">Ausfallgründe</button>
+          <button type="button" data-adm="schuljahr">Schuljahr abschließen</button>
+        </div>
+      </div>
+      <div id="admin-inhalt"></div>
+    </section>
+
+    <!-- ---------- Info ---------- -->
+    <section class="tab-section" id="tab-info">
+      <div class="card">
+        <h2>Über den Schulsport-Planer <span class="version-badge" id="version-badge-2"></span></h2>
+        <p class="muted">
+          Planung und Nachweis der Sport- und Fußball-AGs, die der Verein an Schulen
+          und im Hort anbietet, sowie der Fußballcamps in den Ferien. Der Wochenplan
+          zeigt, was wann wo stattfindet; aus den Rückmeldungen der Übungsleiter
+          entsteht der Nachweis, den Behörden und Fördermittelgeber verlangen.
+        </p>
+      </div>
+      <div class="card">
+        <h2>Änderungen</h2>
+        <div id="changelog-list"></div>
+      </div>
+      <div class="card">
+        <h3>Konto</h3>
+        <div class="btn-row" style="justify-content:flex-start;">
+          <a class="btn secondary small" href="https://sc1911heiligenstadt.github.io/ToolsUebersicht/">Zur Tools-Übersicht (an-/abmelden)</a>
+        </div>
+      </div>
+
+      <div class="card" id="ds-info-karte">
+        <h2>Datenschutz</h2>
+        <p>Dieses Werkzeug gehört zu den internen Anwendungen des
+        1. SC 1911 Heiligenstadt. Die hier erfassten Daten werden
+        ausschließlich für die Vereinsarbeit verwendet und liegen auf Servern
+        in Deutschland, die ein Auftragsverarbeiter für den Verein betreibt.
+        Eine Weitergabe an Dritte findet nur statt, soweit sie für den
+        jeweiligen Zweck erforderlich oder gesetzlich vorgeschrieben ist.</p>
+        <p>Von den teilnehmenden Kindern wird ausschließlich die Anzahl je Termin
+        erfasst. Namen von Schülerinnen und Schülern werden in diesem Werkzeug
+        nicht gespeichert. Bestätigt eine Schule einen Nachweis, werden Name,
+        Funktion, Unterschrift und Zeitpunkt der bestätigenden Person als
+        Nachweis der erbrachten Leistung festgehalten.</p>
+        <p>Verantwortlich ist der 1. SC 1911 Heiligenstadt, Leineberg 2,
+        37308 Heilbad Heiligenstadt, Telefon 03606 612206,
+        <a href="mailto:info@sc1911-heiligenstadt.de">info@sc1911-heiligenstadt.de</a>.
+        Auskunft, Berichtigung, Löschung, Einschränkung der Verarbeitung,
+        Datenübertragbarkeit und Widerspruch lassen sich unter dieser
+        Anschrift geltend machen. Beschwerden nimmt der Thüringer
+        Landesbeauftragte für den Datenschutz und die Informationsfreiheit
+        entgegen.</p>
+        <p><a href="https://www.sc1911-heiligenstadt.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung des Vereins</a>
+        &middot;
+        <a href="https://www.sc1911-heiligenstadt.de/impressum-2/" target="_blank" rel="noopener">Impressum</a></p>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<!-- Maßnahme anlegen/bearbeiten -->
+<div class="overlay" id="massnahme-overlay">
+  <div class="dialog" id="massnahme-dialog">
+    <div class="dialog-kopf">
+      <h2 id="massnahme-dialog-titel">Neue AG</h2>
+      <button type="button" class="dialog-schliessen" id="btn-massnahme-abbrechen" aria-label="Schließen">×</button>
+    </div>
+    <div class="dialog-inhalt" id="massnahme-formular"></div>
+    <div class="dialog-fuss">
+      <button type="button" class="btn secondary" id="btn-massnahme-loeschen">Löschen</button>
+      <span style="flex:1;"></span>
+      <button type="button" class="btn secondary" id="btn-massnahme-abbrechen-2">Abbrechen</button>
+      <button type="button" class="btn success" id="btn-massnahme-speichern">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Vorschau vor dem Neuerzeugen der Termine -->
+<div class="overlay" id="abgleich-overlay">
+  <div class="dialog dialog-schmal">
+    <div class="dialog-kopf">
+      <h2>Termine neu erzeugen</h2>
+      <button type="button" class="dialog-schliessen" id="btn-abgleich-abbrechen" aria-label="Schließen">×</button>
+    </div>
+    <div class="dialog-inhalt" id="abgleich-inhalt"></div>
+    <div class="dialog-fuss">
+      <span style="flex:1;"></span>
+      <button type="button" class="btn secondary" id="btn-abgleich-abbrechen-2">Abbrechen</button>
+      <button type="button" class="btn success" id="btn-abgleich-anwenden">Übernehmen</button>
+    </div>
+  </div>
+</div>
+
+<!-- Einzeltermin -->
+<div class="overlay" id="termin-overlay">
+  <div class="dialog dialog-schmal">
+    <div class="dialog-kopf">
+      <h2 id="termin-dialog-titel">Termin</h2>
+      <button type="button" class="dialog-schliessen" id="btn-termin-abbrechen" aria-label="Schließen">×</button>
+    </div>
+    <div class="dialog-inhalt" id="termin-formular"></div>
+    <div class="dialog-fuss">
+      <span style="flex:1;"></span>
+      <button type="button" class="btn secondary" id="btn-termin-abbrechen-2">Schließen</button>
+      <button type="button" class="btn success" id="btn-termin-speichern">Speichern</button>
+    </div>
+  </div>
+</div>
+
+<!-- Freigabelink -->
+<div class="overlay" id="freigabe-overlay">
+  <div class="dialog dialog-schmal">
+    <div class="dialog-kopf">
+      <h2>Bestätigungslink</h2>
+      <button type="button" class="dialog-schliessen" id="btn-freigabe-schliessen" aria-label="Schließen">×</button>
+    </div>
+    <div class="dialog-inhalt" id="freigabe-inhalt"></div>
+    <div class="dialog-fuss">
+      <span style="flex:1;"></span>
+      <button type="button" class="btn secondary" id="btn-freigabe-schliessen-2">Schließen</button>
+    </div>
+  </div>
+</div>
+
+<script src="config.js?v=1.0"></script>
+<script src="seed.js?v=1.0"></script>
+<script src="termine.js?v=1.0"></script>
+<script src="db.js?v=1.0"></script>
+<script src="pdf.js?v=1.0"></script>
+<script src="massnahmen.js?v=1.0"></script>
+<script src="nachweise.js?v=1.0"></script>
+<script src="app.js?v=1.0"></script>
+</body>
+</html>
