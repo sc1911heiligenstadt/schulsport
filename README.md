@@ -1,39 +1,30 @@
-# Schulsport
+# 🏫 Schulsport
 
-Planung und Durchführungsnachweis der Sport- und Fußball-AGs, die der
-1. SC 1911 Heiligenstadt an Schulen und im Hort anbietet, sowie der
-Fußballcamps in den Ferien.
+Wochenplan und Nachweis der Sport- und Fußball-AGs an Schulen und im Hort sowie der Ferien-Camps: Eine AG wird einmal als Serie angelegt, die Termine des Schuljahres entstehen daraus von selbst und lassen Ferien automatisch aus. Nach jeder Einheit meldet der Übungsleiter am Handy, ob sie stattgefunden hat und wie viele Kinder da waren — daraus entsteht auf Knopfdruck der Durchführungsnachweis als PDF, den die Schule über einen Link auch digital gegenzeichnen kann.
 
-**Live:** https://sc1911heiligenstadt.github.io/schulsport/
+**➡️ [Schulsport öffnen](https://sc1911heiligenstadt.github.io/schulsport/)**
 
-## Was das Werkzeug leistet
+## Seiten
 
-- **Wochenplan** über alle Schulen: Montag bis Freitag nebeneinander, jede
-  Schule in ihrer Farbe, Ferientage grau hinterlegt, Camps als durchgehendes
-  Band. Am Handy wird daraus eine Tagesliste.
-- **Serien statt Einzeltermine**: Eine AG wird einmal angelegt (Schule, Ort,
-  Wochentag, Zeitraum), die Termine des Schuljahres entstehen daraus von selbst.
-  Ferien und Feiertage fallen automatisch weg.
-- **Rückmeldung durch die Übungsleiter**: Nach jeder Einheit werden Status und
-  Teilnehmerzahl gemeldet — zwei Taps am Handy. Fällt etwas aus, wird der Grund
-  aus einer Liste gewählt.
-- **Durchführungsnachweis als PDF**: Kopfdaten, jeder einzelne Termin mit Datum
-  und Teilnehmerzahl, Summen, Ausfälle nach Grund und die geleisteten Stunden.
-  Dazu eine Sammelübersicht über alle Maßnahmen eines Zeitraums.
-- **Digitale Bestätigung durch die Schule**: Sie erhält einen Link, sieht dort
-  die Aufstellung und unterschreibt am Bildschirm. Ein Zugang zu den
-  Vereins-Tools ist dafür nicht nötig.
+| Seite | Wofür |
+|---|---|
+| [Schulsport](https://sc1911heiligenstadt.github.io/schulsport/) | Wochenplan und Nachweis der Sport- und Fußball-AGs an Schulen und im Hort sowie der Ferien-Camps: Eine AG wird einmal als Serie … |
+| [Nachweis bestätigen](https://sc1911heiligenstadt.github.io/schulsport/bestaetigung.html) | Die Schule bestätigt die Durchführung — über einen Link, ohne Anmeldung |
 
-## Datenschutz
+## Zugang
 
-Von den teilnehmenden Kindern wird ausschließlich die **Anzahl** je Termin
-erfasst. Namen von Schülerinnen und Schülern werden in diesem Werkzeug nicht
-gespeichert.
+Die Anmeldung läuft über die [Tools-Übersicht](https://sc1911heiligenstadt.github.io/ToolsUebersicht/) — dort einmal anmelden, danach ist dieses Werkzeug offen.
+
+Die Rechte gelten in drei Stufen: **Sehen** (nur ansehen), **Bearbeiten** (Einträge pflegen) und **Administrieren** (Einstellungen und Verwaltung). Wer welche Stufe hat, legt die Tools-Übersicht fest.
+
+## Lokal starten
+
+Über den Eintrag `schulsport` in `E:\.claude\launch.json` — der Server läuft dann auf `http://localhost:8812/`.
 
 ## Technik
 
-Vanilla JavaScript ohne Build-Schritt. Anmeldung und Speicherung laufen über die
-zentrale Tools-Übersicht des Vereins; die Daten liegen in der Vereins-Nextcloud.
+Vanilla JavaScript ohne Build-Schritt — die Dateien werden so ausgeliefert, wie sie im Repo liegen. Veröffentlicht über GitHub Pages. Die Daten liegen in der Vereins-Nextcloud; der Zugriff läuft ausschließlich über den Login-Worker der Tools-Übersicht, nie mit Zugangsdaten im Browser.
 
-Lokaler Entwicklungsserver: Port 8812 (Eintrag `schulsport` in
-`E:\.claude\launch.json`).
+---
+
+Ein Werkzeug des 1. SC 1911 Heiligenstadt. Alle Werkzeuge auf einen Blick: [Tools-Übersicht](https://sc1911heiligenstadt.github.io/ToolsUebersicht/) · Erklärungen im [Toolbox Wiki](https://sc1911heiligenstadt.github.io/Vereinswiki/).
