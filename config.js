@@ -109,6 +109,18 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
+    version: "1.0.1",
+    groups: [
+      {
+        title: "Wochenplan am Computer wieder lesbar",
+        items: [
+          "Die Wochenansicht am Computer zeigt den Tagesverlauf wieder als Zeitraster: Die Uhrzeiten stehen untereinander an der linken Seite, und jeder Termin liegt an der Stelle, an der er wirklich stattfindet.",
+          "Alle Wochentage beginnen jetzt auf gleicher Höhe — auch dann, wenn bei einzelnen Tagen zusätzlich Ferien vermerkt sind."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.0",
     groups: [
       {

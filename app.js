@@ -400,6 +400,13 @@ function renderWoche() {
   });
 
   // --- Raster (ab 768px) ---
+  // ⚠️ Die Hoehe MUSS hier gesetzt werden. Bloecke und Zeitmarken sind absolut
+  // positioniert und tragen nichts zum Fluss bei; ohne diesen Wert faellt die
+  // Spalte auf 0 zusammen und alle Zeitmarken landen uebereinander.
+  // 1px je Minute — deckungsgleich mit dem 30px-Takt des Hintergrundverlaufs
+  // in .raster-spalte. Wer den einen Wert aendert, muss den anderen mitziehen.
+  const rasterHoehe = Math.round(spanne);
+
   let marken = "";
   for (let min = fenster.von; min <= fenster.bis; min += 30) {
     const pos = ((min - fenster.von) / spanne) * 100;
@@ -455,14 +462,17 @@ function renderWoche() {
         <span class="datum">${fmtDatumKurz(tag.iso)}</span>
         ${sperr && sperr.namen.length ? `<span class="ferien-name">${escapeHtml(sperr.namen[0])}</span>` : ""}
       </div>
-      <div class="raster-spalte">${bloecke}</div>
+      <div class="raster-spalte" style="height:${rasterHoehe}px">${bloecke}</div>
     </div>`;
   });
 
   const rasterHtml = `<div class="raster-wrap">
     ${bandHtml}
     <div class="raster">
-      <div class="raster-zeit">${marken}</div>
+      <div class="raster-zeit">
+        <div class="raster-zeit-kopf"></div>
+        <div class="raster-zeit-achse" style="height:${rasterHoehe}px">${marken}</div>
+      </div>
       <div class="raster-tage">${tageHtml}</div>
     </div>
   </div>`;

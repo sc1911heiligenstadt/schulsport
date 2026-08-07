@@ -199,21 +199,34 @@ button.btn:disabled { opacity: 0.6; cursor: default; }
    Block. Deshalb je Tag ein position:relative-Container mit absolut gesetzten
    Bloecken; Ueberlappungen teilen die Spaltenbreite.
    Feste Spaltenzahl statt auto-fit — auto-fit mit minmax(0,…) legt eine Spalte
-   je Kind an und laesst die Seite am Handy ueberlaufen. */
+   je Kind an und laesst die Seite am Handy ueberlaufen.
+
+   ⚠️ Die Hoehe kommt aus app.js als Inline-Wert (1px je Minute), NICHT von
+   hier. Bloecke und Zeitmarken sind absolut gesetzt und tragen nichts zum
+   Fluss bei — ohne gesetzte Hoehe faellt das ganze Raster auf 0 zusammen und
+   die Zeitmarken stapeln sich uebereinander. Der 30px-Takt des
+   Hintergrundverlaufs entspricht dabei genau einer halben Stunde. */
 .raster-wrap { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; margin-bottom: 18px; overflow-x: auto; }
 .raster { display: flex; min-width: 720px; }
-.raster-zeit { flex: 0 0 54px; position: relative; }
+/* Kopfhoehe fest, nicht vom Inhalt abhaengig: ein Tag mit Ferien-Zeile haette
+   sonst einen hoeheren Kopf als seine Nachbarn, und die Spalten starteten auf
+   verschiedenen Hoehen. Die Zeitachse links traegt denselben Spacer, sonst
+   laeuft ihre Beschriftung gegen die Bloecke aus dem Takt. */
+.raster { --kopf-hoehe: 54px; }
+.raster-zeit { flex: 0 0 54px; display: flex; flex-direction: column; }
+.raster-zeit-kopf { flex: 0 0 var(--kopf-hoehe); margin-bottom: 4px; }
+.raster-zeit-achse { position: relative; }
 .raster-zeit .marke {
   position: absolute; left: 0; right: 6px; text-align: right;
   font-size: 11px; color: var(--muted); transform: translateY(-50%);
 }
 .raster-tage { display: flex; flex: 1 1 auto; gap: 6px; }
 .raster-tag { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
-.raster-tag-kopf { text-align: center; font-size: 13px; font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+.raster-tag-kopf { height: var(--kopf-hoehe); text-align: center; font-size: 13px; font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
 .raster-tag-kopf .datum { display: block; font-size: 11px; color: var(--muted); font-weight: 400; }
 .raster-tag-kopf .ferien-name { display: block; font-size: 10px; color: var(--gold); font-weight: 600; }
 .raster-tag.heute .raster-tag-kopf { color: var(--blue); }
-.raster-spalte { position: relative; flex: 1 1 auto; background: repeating-linear-gradient(to bottom, transparent, transparent 29px, var(--border) 29px, var(--border) 30px); border-radius: 6px; }
+.raster-spalte { position: relative; background: repeating-linear-gradient(to bottom, transparent, transparent 29px, var(--border) 29px, var(--border) 30px); border-radius: 6px; }
 .raster-tag.gesperrt .raster-spalte { background-color: var(--gray); }
 
 .block {
