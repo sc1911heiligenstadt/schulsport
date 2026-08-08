@@ -109,18 +109,6 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
-    version: "1.0.1",
-    groups: [
-      {
-        title: "Wochenplan am Computer wieder lesbar",
-        items: [
-          "Die Wochenansicht am Computer zeigt den Tagesverlauf wieder als Zeitraster: Die Uhrzeiten stehen untereinander an der linken Seite, und jeder Termin liegt an der Stelle, an der er wirklich stattfindet.",
-          "Alle Wochentage beginnen jetzt auf gleicher Höhe — auch dann, wenn bei einzelnen Tagen zusätzlich Ferien vermerkt sind."
-        ]
-      }
-    ]
-  },
-  {
     version: "1.0",
     groups: [
       {
@@ -129,6 +117,7 @@ const APP_CHANGELOG = [
           "Jede AG wird einmal als Serie angelegt — Schule, Ort, Wochentag, Uhrzeit und Zeitraum. Daraus entstehen alle einzelnen Termine des Schuljahres von selbst.",
           "Ferien, Feiertage und Schließtage sind hinterlegt: AG-Termine fallen dort automatisch weg, Ferien-Camps liegen genau darin.",
           "Der Wochenplan zeigt Montag bis Freitag nebeneinander, jede Schule in ihrer eigenen Farbe. Samstag und Sonntag erscheinen nur, wenn dort wirklich etwas stattfindet.",
+          "Am Computer steht der Tagesverlauf als Zeitraster: die Uhrzeiten untereinander an der linken Seite, jeder Termin an der Stelle, an der er wirklich stattfindet. Alle Wochentage beginnen auf gleicher Höhe, auch wenn bei einzelnen Tagen zusätzlich Ferien vermerkt sind.",
           "Vor- und Nachbereitungszeiten sind am Termin sichtbar, damit klar ist, ab wann jemand vor Ort sein muss. Zusätzliche Arbeitszeiten lassen sich an jedem beliebigen Tag eintragen.",
           "Verschiebt sich eine AG mitten im Schuljahr, wird nur ab einem gewählten Stichtag neu geplant. Was bereits stattgefunden hat und was schon gemeldet wurde, bleibt unangetastet."
         ]
