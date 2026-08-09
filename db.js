@@ -130,11 +130,6 @@ async function nachweisStatus(nachweisId, was) {
   return body;
 }
 
-async function ladeArchiv() {
-  const body = await gatewayRequest({ action: "schulsport-archiv-load", app: GATEWAY_APP_ID });
-  return body.data || { meta: { version: 1 }, schuljahre: [] };
-}
-
 async function archiviereSchuljahr(schuljahr) {
   const body = await gatewayRequest({
     action: "schulsport-schuljahr-archivieren", app: GATEWAY_APP_ID, schuljahr
@@ -161,26 +156,3 @@ async function dateiPut(id, name, contentType, dataBase64) {
   });
 }
 
-async function dateiLoeschen(id) {
-  return gatewayRequest({ action: "dav-file-delete", app: GATEWAY_APP_ID, id });
-}
-
-// ⚠️ dav-file-get antwortet NICHT mit JSON, sondern liefert die rohen Bytes als
-// Stream durch. Deshalb hier ein eigener fetch statt gatewayRequest.
-// Liefert einen Blob-URL ("" bei 404/Fehler); der Aufrufer gibt ihn wieder frei.
-async function dateiBlobUrl(id) {
-  const token = getSessionToken();
-  if (!token) throw new NotLoggedInError();
-  let resp;
-  try {
-    resp = await fetch(GATEWAY_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
-      body: JSON.stringify({ action: "dav-file-get", app: GATEWAY_APP_ID, id })
-    });
-  } catch (_) { return ""; }
-  if (!resp.ok) return "";
-  const blob = await resp.blob();
-  if (!blob.size) return "";
-  return URL.createObjectURL(blob);
-}

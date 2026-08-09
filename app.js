@@ -98,12 +98,6 @@ function kontrastFarbe(hex) {
   const r = parseInt(h.slice(0, 2), 16), g = parseInt(h.slice(2, 4), 16), b = parseInt(h.slice(4, 6), 16);
   return (0.2126 * r + 0.7152 * g + 0.0722 * b) > 150 ? "#1e2330" : "#ffffff";
 }
-function hexZuRgb(hex) {
-  const h = String(hex || "").replace("#", "");
-  if (h.length !== 6) return [26, 86, 160];
-  return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
-}
-
 function montagDerWoche(d) {
   const x = new Date(d.getFullYear(), d.getMonth(), d.getDate());
   const versatz = (x.getDay() + 6) % 7;   // Mo = 0
