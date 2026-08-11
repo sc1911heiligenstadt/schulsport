@@ -112,6 +112,12 @@ const APP_CHANGELOG = [
     version: "1.0",
     groups: [
       {
+        title: "Der Reiter „Administrieren“ heißt jetzt „Verwaltung“",
+        items: [
+          "Nur der Name hat sich geändert — Inhalt, Zugang und Rechte sind dieselben. In den anderen Vereins-Tools heißt der rechte Reiter „Verwaltung“ oder „Einstellungen“; dieser hier war der einzige mit einem dritten Namen."
+        ]
+      },
+      {
         title: "Wochenplan für Schul-AGs und Ferien-Camps",
         items: [
           "Jede AG wird einmal als Serie angelegt — Schule, Ort, Wochentag, Uhrzeit und Zeitraum. Daraus entstehen alle einzelnen Termine des Schuljahres von selbst.",

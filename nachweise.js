@@ -230,7 +230,7 @@ async function sendeNachweisMail(nachweisId, knopf) {
   const n = (appData.nachweise || []).find((x) => x.id === nachweisId);
   const schule = n ? schuleVon((massnahmeVon(n.massnahmeId) || {}).schuleId) : null;
   if (schule && !schule.bestaetigungEmail) {
-    alert("Für „" + schule.name + "“ ist keine E-Mail für Bestätigungen hinterlegt.\n\nSie lässt sich unter Administrieren → Schulen eintragen. Bis dahin hilft der Knopf „Link“.");
+    alert("Für „" + schule.name + "“ ist keine E-Mail für Bestätigungen hinterlegt.\n\nSie lässt sich unter Verwaltung → Schulen eintragen. Bis dahin hilft der Knopf „Link“.");
     return;
   }
   if (!confirm("Bestätigungslink an " + (schule ? schule.bestaetigungEmail : "die Schule") + " schicken?")) return;
