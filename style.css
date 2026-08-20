@@ -81,7 +81,10 @@ nav button:hover { background: var(--gray); }
 nav button.active { color: var(--blue); border-bottom-color: var(--blue); }
 /* Das margin haengt am Wrapper, damit die Gruppe rechts bleibt, auch wenn
    Administrieren fuer Nicht-Admins ausgeblendet ist. */
-nav .nav-right { margin-left: auto; display: flex; gap: inherit; }
+/* flex-wrap, weil die Gruppe sonst als ein Stueck ueber den rechten Rand
+   hinauslaeuft: bei 375px bleiben neben dem linken Reiter nur ~319px, und
+   vier Reiter brauchen mehr. Ohne den Umbruch ist der letzte nicht antippbar. */
+nav .nav-right { margin-left: auto; display: flex; flex-wrap: wrap; gap: inherit; }
 .nav-zaehler {
   display: inline-block; min-width: 18px; padding: 1px 6px; margin-left: 4px;
   background: var(--red); color: white; border-radius: 9px;
