@@ -109,6 +109,17 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
+    version: "1.2",
+    groups: [
+      {
+        title: "Der richtige Vereinsname",
+        items: [
+          "Im Kopf der PDFs stand „1. SC 1911 e.V. Heilbad Heiligenstadt“. Richtig ist „1. SC 1911 Heiligenstadt e.V.“ — neue PDFs tragen den richtigen Namen. Schon verschickte PDFs ändern sich nicht."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.1",
     groups: [
       {
