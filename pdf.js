@@ -71,7 +71,7 @@ function pdfKopf(doc, titel, untertitel) {
   doc.text(titel, 14, 18);
   doc.setFontSize(9);
   doc.setTextColor(90, 90, 90);
-  doc.text("1. SC 1911 e.V. Heilbad Heiligenstadt", 14, 24);
+  doc.text("1. SC 1911 Heiligenstadt e.V.", 14, 24);
   if (untertitel) doc.text(untertitel, 14, 29);
   doc.setTextColor(30, 35, 48);
   return untertitel ? 35 : 30;
