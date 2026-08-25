@@ -64,7 +64,7 @@ function renderNachweis(n) {
   document.getElementById("nw-titel").textContent = d.massnahmeTitel || "Durchführungsnachweis";
 
   const zeilen = [
-    ["Maßnahme", (d.massnahmeTitel || "") + (d.typ === "camp" ? "  (Ferien-Camp)" : "")],
+    ["Maßnahme", d.massnahmeTitel || ""],
     ["Rahmen", [d.rahmen, d.zielgruppe].filter(Boolean).join(" · ")],
     ["Schule", [d.schuleName, d.schuleAnschrift].filter(Boolean).join(", ")],
     ["Ort", d.ortName || ""],

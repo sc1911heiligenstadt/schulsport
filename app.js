@@ -300,13 +300,11 @@ function wochenTermine() {
   const so = new Date(mo); so.setDate(so.getDate() + 6);
   const fSchule = document.getElementById("filter-schule").value;
   const fPerson = document.getElementById("filter-person").value;
-  const fTyp = document.getElementById("filter-typ").value;
 
   return termineImZeitraum(isoAusDatum(mo), isoAusDatum(so), (t) => {
     const m = massnahmeVon(t.massnahmeId);
     if (!m) return false;
     if (fSchule && m.schuleId !== fSchule) return false;
-    if (fTyp && m.typ !== fTyp) return false;
     if (fPerson) {
       const drin = m.verantwortlichUsername === fPerson ||
         (Array.isArray(m.teamUsernames) && m.teamUsernames.indexOf(fPerson) !== -1);
@@ -380,19 +378,6 @@ function renderWoche() {
   const fenster = rasterFenster(termine);
   const spanne = Math.max(30, fenster.bis - fenster.von);
 
-  // Campwochen als Band über dem Raster
-  const camps = new Set();
-  termine.forEach((t) => {
-    const m = massnahmeVon(t.massnahmeId);
-    if (m && m.typ === "camp") camps.add(m.id);
-  });
-  let bandHtml = "";
-  camps.forEach((id) => {
-    const m = massnahmeVon(id);
-    if (!m) return;
-    bandHtml += `<div class="camp-band">🏕️ ${escapeHtml(m.titel)} — ${fmtDatum(m.regel.startDatum)} bis ${fmtDatum(m.regel.endDatum)}</div>`;
-  });
-
   // --- Raster (ab 768px) ---
   // ⚠️ Die Hoehe MUSS hier gesetzt werden. Bloecke und Zeitmarken sind absolut
   // positioniert und tragen nichts zum Fluss bei; ohne diesen Wert faellt die
@@ -461,7 +446,6 @@ function renderWoche() {
   });
 
   const rasterHtml = `<div class="raster-wrap">
-    ${bandHtml}
     <div class="raster">
       <div class="raster-zeit">
         <div class="raster-zeit-kopf"></div>
@@ -472,7 +456,7 @@ function renderWoche() {
   </div>`;
 
   // --- Tagesliste (unter 768px) ---
-  let listeHtml = `<div class="tagesliste">${bandHtml}`;
+  let listeHtml = `<div class="tagesliste">`;
   if (!termine.length) {
     listeHtml += `<div class="card"><div class="empty-state">In dieser Woche steht nichts an.</div></div>`;
   }
@@ -919,7 +903,7 @@ async function init() {
   document.getElementById("btn-woche-heute").addEventListener("click", () => {
     wochenAnker = montagDerWoche(heuteDatum()); renderWoche();
   });
-  ["filter-schule", "filter-person", "filter-typ"].forEach((id) => {
+  ["filter-schule", "filter-person"].forEach((id) => {
     document.getElementById(id).addEventListener("change", renderWoche);
   });
   document.getElementById("btn-zu-melden").addEventListener("click", () => activateTab("melden"));

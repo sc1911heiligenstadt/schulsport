@@ -7,12 +7,12 @@ const APP_VERSION = "1.0";
 // Fachliche Konstanten
 // ---------------------------------------------------------------------------
 
-// Eine Maßnahme ist entweder eine AG (läuft in der Schulzeit, lässt Ferien aus)
-// oder ein Camp (liegt bewusst IN den Ferien). Gleicher Datentyp, anderes Muster.
-const MASSNAHME_TYPEN = [
-  { id: "ag",   name: "AG",   ferienAuslassen: true,  muster: "woechentlich" },
-  { id: "camp", name: "Camp", ferienAuslassen: false, muster: "taeglich" }
-];
+// Eine Maßnahme ist eine AG: sie läuft in der Schulzeit und lässt Ferien aus.
+// Am 2026-08-25 auf Michels Entscheidung hin auf diesen einen Fall verengt --
+// bis dahin gab es daneben den Typ "camp" mit täglichem Muster in den Ferien.
+// Ferien-Camps laufen jetzt ausschließlich über die eigene App "fussballcamp".
+const MASSNAHME_MUSTER = "woechentlich";
+const MASSNAHME_FERIEN_AUSLASSEN = true;
 
 const RAHMEN_ARTEN = [
   { id: "schulzeit", name: "Schulzeit" },
@@ -29,7 +29,7 @@ const TERMIN_STATUS = [
 ];
 
 // Ferien, Feiertage und schulspezifische Schließtage. Die Art entscheidet, ob
-// eine AG oder ein Camp an diesem Tag stattfindet.
+// eine AG an diesem Tag stattfindet.
 const SPERRTAG_ARTEN = [
   { id: "ferien",      name: "Ferien" },
   { id: "feiertag",    name: "Feiertag" },
@@ -109,6 +109,19 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
+    version: "1.3",
+    groups: [
+      {
+        title: "Ferien-Camps sind aus dem Schulsport-Planer heraus",
+        items: [
+          "Der Planer ist jetzt allein für die AGs an Schulen und im Hort da. Die Auswahl „Art“ beim Anlegen einer Maßnahme, der Knopf „+ Neues Camp“, der Filter „AGs und Camps“ im Wochenplan und das Camp-Band über dem Zeitraster sind entfallen.",
+          "Für Ferien-Camps gibt es das eigene Tool „Fußballcamp“. Wer dort plant und anmeldet, führt beides nicht mehr an zwei Stellen.",
+          "An bestehenden AGs, ihren Terminen und allen bereits ausgestellten Nachweisen ändert sich nichts."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.2",
     groups: [
       {
@@ -140,10 +153,10 @@ const APP_CHANGELOG = [
         ]
       },
       {
-        title: "Wochenplan für Schul-AGs und Ferien-Camps",
+        title: "Wochenplan für Schul-AGs",
         items: [
           "Jede AG wird einmal als Serie angelegt — Schule, Ort, Wochentag, Uhrzeit und Zeitraum. Daraus entstehen alle einzelnen Termine des Schuljahres von selbst.",
-          "Ferien, Feiertage und Schließtage sind hinterlegt: AG-Termine fallen dort automatisch weg, Ferien-Camps liegen genau darin.",
+          "Ferien, Feiertage und Schließtage sind hinterlegt: AG-Termine fallen dort automatisch weg.",
           "Der Wochenplan zeigt Montag bis Freitag nebeneinander, jede Schule in ihrer eigenen Farbe. Samstag und Sonntag erscheinen nur, wenn dort wirklich etwas stattfindet.",
           "Am Computer steht der Tagesverlauf als Zeitraster: die Uhrzeiten untereinander an der linken Seite, jeder Termin an der Stelle, an der er wirklich stattfindet. Alle Wochentage beginnen auf gleicher Höhe, auch wenn bei einzelnen Tagen zusätzlich Ferien vermerkt sind.",
           "Vor- und Nachbereitungszeiten sind am Termin sichtbar, damit klar ist, ab wann jemand vor Ort sein muss. Zusätzliche Arbeitszeiten lassen sich an jedem beliebigen Tag eintragen.",

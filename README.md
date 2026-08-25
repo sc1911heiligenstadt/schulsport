@@ -1,6 +1,6 @@
 # 🏫 Schulsport
 
-Wochenplan und Nachweis der Sport- und Fußball-AGs an Schulen und im Hort sowie der Ferien-Camps: Eine AG wird einmal als Serie angelegt, die Termine des Schuljahres entstehen daraus von selbst und lassen Ferien automatisch aus. Nach jeder Einheit meldet der Übungsleiter am Handy, ob sie stattgefunden hat und wie viele Kinder da waren — daraus entsteht auf Knopfdruck der Durchführungsnachweis als PDF, den die Schule über einen Link auch digital gegenzeichnen kann.
+Wochenplan und Nachweis der Sport- und Fußball-AGs an Schulen und im Hort: Eine AG wird einmal als Serie angelegt, die Termine des Schuljahres entstehen daraus von selbst und lassen Ferien automatisch aus. Nach jeder Einheit meldet der Übungsleiter am Handy, ob sie stattgefunden hat und wie viele Kinder da waren — daraus entsteht auf Knopfdruck der Durchführungsnachweis als PDF, den die Schule über einen Link auch digital gegenzeichnen kann.
 
 **➡️ [Schulsport öffnen](https://sc1911heiligenstadt.github.io/schulsport/)**
 
@@ -8,7 +8,7 @@ Wochenplan und Nachweis der Sport- und Fußball-AGs an Schulen und im Hort sowie
 
 | Seite | Wofür |
 |---|---|
-| [Schulsport](https://sc1911heiligenstadt.github.io/schulsport/) | Wochenplan und Nachweis der Sport- und Fußball-AGs an Schulen und im Hort sowie der Ferien-Camps: Eine AG wird einmal als Serie … |
+| [Schulsport](https://sc1911heiligenstadt.github.io/schulsport/) | Wochenplan und Nachweis der Sport- und Fußball-AGs an Schulen und im Hort: Eine AG wird einmal als Serie … |
 | [Nachweis bestätigen](https://sc1911heiligenstadt.github.io/schulsport/bestaetigung.html) | Die Schule bestätigt die Durchführung — über einen Link, ohne Anmeldung |
 
 ## Zugang

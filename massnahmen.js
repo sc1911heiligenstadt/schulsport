@@ -1,4 +1,4 @@
-// Maßnahmen-Verwaltung (AGs und Camps) und der Administrieren-Tab.
+// Maßnahmen-Verwaltung (AGs) und der Administrieren-Tab.
 // Setzt auf app.js auf und nutzt dessen Zustand (appData, canEdit, markDirty).
 
 // ---------------------------------------------------------------------------
@@ -49,12 +49,12 @@ function renderMassnahmen() {
         </div>
       </div>
       <p class="muted">
-        ${escapeHtml(m.typ === "camp" ? "Camp" : "AG")}${rahmen ? " · " + escapeHtml(rahmen.name) : ""}
+        AG${rahmen ? " · " + escapeHtml(rahmen.name) : ""}
         ${schule ? " · " + escapeHtml(schule.name) : ""}${ort ? " · " + escapeHtml(ort.name) : ""}
         ${m.zielgruppe ? " · " + escapeHtml(m.zielgruppe) : ""}
       </p>
       <p class="muted">
-        ${m.typ === "camp" ? "täglich" : (wt ? wt : "kein Wochentag gewählt")}
+        ${wt ? wt : "kein Wochentag gewählt"}
         ${escapeHtml(m.regel.startZeit || "")}–${escapeHtml(m.regel.endZeit || "")} ·
         ${fmtDatum(m.regel.startDatum)} bis ${fmtDatum(m.regel.endDatum)}
       </p>
@@ -84,13 +84,12 @@ function renderMassnahmen() {
 // Maßnahmen-Dialog
 // ---------------------------------------------------------------------------
 
-function leereMassnahme(typ) {
-  const t = MASSNAHME_TYPEN.find((x) => x.id === typ) || MASSNAHME_TYPEN[0];
+function leereMassnahme() {
   const heute = heuteIso();
   return {
     id: uuid(),
     schuljahr: schuljahrAusIso(heute, SCHULJAHR_BEGINN_MONAT),
-    typ: t.id,
+    typ: "ag",
     titel: "",
     schuleId: "", ortId: "",
     rahmen: "schulzeit",
@@ -100,11 +99,11 @@ function leereMassnahme(typ) {
     verantwortlichUsername: currentUser.username || "",
     teamUsernames: [],
     regel: {
-      muster: t.muster,
-      wochentage: t.muster === "woechentlich" ? [2] : [],
+      muster: MASSNAHME_MUSTER,
+      wochentage: [2],
       startDatum: heute, endDatum: heute,
       startZeit: "14:00", endZeit: "15:30",
-      ferienAuslassen: t.ferienAuslassen,
+      ferienAuslassen: MASSNAHME_FERIEN_AUSLASSEN,
       feiertageAuslassen: true,
       schliesstageAuslassen: true,
       ausnahmen: []
@@ -121,14 +120,14 @@ function leereMassnahme(typ) {
   };
 }
 
-function oeffneMassnahme(id, typ) {
+function oeffneMassnahme(id) {
   if (!canEdit()) return;
   let m;
   if (id) { m = massnahmeVon(id); if (!m) return; offeneMassnahmeId = id; }
-  else { m = leereMassnahme(typ); offeneMassnahmeId = null; window.__neueMassnahme = m; }
+  else { m = leereMassnahme(); offeneMassnahmeId = null; window.__neueMassnahme = m; }
 
   document.getElementById("massnahme-dialog-titel").textContent =
-    id ? "Maßnahme bearbeiten" : (typ === "camp" ? "Neues Camp" : "Neue AG");
+    id ? "Maßnahme bearbeiten" : "Neue AG";
   document.getElementById("btn-massnahme-loeschen").style.display = id ? "" : "none";
 
   const schulOpt = (appData.schulen || []).map((s) =>
@@ -152,11 +151,6 @@ function oeffneMassnahme(id, typ) {
       <div class="form-field">
         <label>Bezeichnung</label>
         <input type="text" id="f-titel" maxlength="120" value="${escapeHtml(m.titel)}" placeholder="z. B. Fußball-AG Klasse 1–2" />
-      </div>
-      <div class="form-field">
-        <label>Art</label>
-        <select id="f-typ">${MASSNAHME_TYPEN.map((t) =>
-          `<option value="${escapeHtml(t.id)}"${m.typ === t.id ? " selected" : ""}>${escapeHtml(t.name)}</option>`).join("")}</select>
       </div>
       <div class="form-field">
         <label>Schule</label>
@@ -195,11 +189,11 @@ function oeffneMassnahme(id, typ) {
         <input type="time" id="f-endzeit" value="${escapeHtml(m.regel.endZeit || "")}" />
       </div>
     </div>
-    <div id="f-wt-block" style="${m.regel.muster === "taeglich" ? "display:none" : ""}">
+    <div id="f-wt-block">
       <label style="display:block;font-size:12px;color:var(--muted);font-weight:600;margin-bottom:4px;">Wochentage</label>
       <div>${wtChecks}</div>
     </div>
-    <p class="muted" id="f-muster-hinweis" style="margin-top:8px;"></p>
+    <p class="muted" id="f-muster-hinweis" style="margin-top:8px;">Die AG wiederholt sich wöchentlich an den gewählten Wochentagen.</p>
     <label class="check-zeile"><input type="checkbox" id="f-ferien"${m.regel.ferienAuslassen ? " checked" : ""} /> Ferien auslassen</label>
     <label class="check-zeile"><input type="checkbox" id="f-feiertage"${m.regel.feiertageAuslassen ? " checked" : ""} /> Feiertage auslassen</label>
     <label class="check-zeile"><input type="checkbox" id="f-schliesstage"${m.regel.schliesstageAuslassen ? " checked" : ""} /> Schließtage der Schule auslassen</label>
@@ -244,7 +238,6 @@ function oeffneMassnahme(id, typ) {
     <p class="muted" id="f-vorschau" style="margin-top:10px;"></p>
   `;
 
-  const typSel = document.getElementById("f-typ");
   const aktualisiereVorschau = () => {
     const entwurf = sammleMassnahme(m);
     const soll = erzeugeSollTermine(entwurf, appData.sperrtage);
@@ -256,23 +249,10 @@ function oeffneMassnahme(id, typ) {
       el.textContent = "Diese Regel ergibt " + soll.length + " Termine, vom " + fmtDatum(soll[0].datum) + " bis " + fmtDatum(soll[soll.length - 1].datum) + ".";
       el.style.color = "";
     }
-    // Camp außerhalb der Ferien ist ein Hinweis, keine Sperre.
-    if (entwurf.typ === "camp" && soll.length) {
-      const idx = baueSperrtagIndex(appData.sperrtage, entwurf.schuleId);
-      const ausserhalb = soll.filter((s) => !(idx[s.datum] && idx[s.datum].ferien)).length;
-      if (ausserhalb) el.textContent += " Achtung: " + ausserhalb + " Tage liegen außerhalb der Ferien.";
-    }
   };
-  typSel.addEventListener("change", () => {
-    const t = MASSNAHME_TYPEN.find((x) => x.id === typSel.value) || MASSNAHME_TYPEN[0];
-    document.getElementById("f-wt-block").style.display = t.muster === "taeglich" ? "none" : "";
-    document.getElementById("f-ferien").checked = t.ferienAuslassen;
-    document.getElementById("f-muster-hinweis").textContent = t.muster === "taeglich"
-      ? "Ein Camp läuft täglich von Montag bis Freitag im gewählten Zeitraum."
-      : "Die AG wiederholt sich wöchentlich an den gewählten Wochentagen.";
-    aktualisiereVorschau();
-  });
-  typSel.dispatchEvent(new Event("change"));
+  // Fruehler stiess ein "change" auf dem Typ-Feld die erste Vorschau an. Das Feld
+  // ist mit dem Typ "camp" entfallen -- der erste Lauf steht deshalb hier direkt.
+  aktualisiereVorschau();
 
   ["f-von", "f-bis", "f-startzeit", "f-endzeit", "f-ferien", "f-feiertage", "f-schliesstage", "f-schule"]
     .forEach((id) => { const el = document.getElementById(id); if (el) el.addEventListener("change", aktualisiereVorschau); });
@@ -298,7 +278,7 @@ function sammleMassnahme(basis) {
   const c = (id) => { const el = document.getElementById(id); return el ? el.checked : false; };
 
   m.titel = v("f-titel").trim();
-  m.typ = v("f-typ");
+  m.typ = "ag";
   m.schuleId = v("f-schule");
   m.ortId = v("f-ort");
   m.rahmen = v("f-rahmen");
@@ -311,10 +291,9 @@ function sammleMassnahme(basis) {
   m.mitbringen = v("f-mitbringen").split(",").map((s) => s.trim()).filter(Boolean);
   m.teamUsernames = Array.from(document.querySelectorAll(".f-team:checked")).map((x) => x.value);
 
-  const t = MASSNAHME_TYPEN.find((x) => x.id === m.typ) || MASSNAHME_TYPEN[0];
   m.regel = Object.assign({}, basis.regel, {
-    muster: t.muster,
-    wochentage: t.muster === "taeglich" ? [] : Array.from(document.querySelectorAll(".f-wt:checked")).map((x) => Number(x.value)),
+    muster: MASSNAHME_MUSTER,
+    wochentage: Array.from(document.querySelectorAll(".f-wt:checked")).map((x) => Number(x.value)),
     startDatum: v("f-von"),
     endDatum: v("f-bis"),
     startZeit: v("f-startzeit"),
@@ -639,7 +618,7 @@ function renderAdminSperrtage(el) {
 
   el.innerHTML = `<div class="card">
     <h2>Ferien, Feiertage und Schließtage</h2>
-    <p class="muted">AG-Termine fallen an diesen Tagen weg, Camps liegen bewusst in den Ferien. Ein Eintrag ohne Schule gilt für alle.</p>
+    <p class="muted">AG-Termine fallen an diesen Tagen weg. Ein Eintrag ohne Schule gilt für alle.</p>
     <div class="form-grid wide">
       <div class="form-field"><label>Bezeichnung</label><input type="text" id="sp-name" placeholder="z. B. Projektwoche" /></div>
       <div class="form-field"><label>Art</label><select id="sp-art">${SPERRTAG_ARTEN.map((a) =>
@@ -800,9 +779,7 @@ function renderAdminSchuljahr(el) {
 
 function setupMassnahmenKnoepfe() {
   const n1 = document.getElementById("btn-neue-ag");
-  if (n1) n1.addEventListener("click", () => oeffneMassnahme(null, "ag"));
-  const n2 = document.getElementById("btn-neues-camp");
-  if (n2) n2.addEventListener("click", () => oeffneMassnahme(null, "camp"));
+  if (n1) n1.addEventListener("click", () => oeffneMassnahme(null));
   const sp = document.getElementById("btn-massnahme-speichern");
   if (sp) sp.addEventListener("click", speichereMassnahme);
   const lo = document.getElementById("btn-massnahme-loeschen");

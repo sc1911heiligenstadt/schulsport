@@ -105,14 +105,10 @@ function erzeugeSollTermine(massnahme, sperrtage) {
   for (const d = new Date(von); d <= bis; d.setDate(d.getDate() + 1)) {
     const wt = d.getDay(); // 0 = So, 1 = Mo, ...
 
-    if (r.muster === "taeglich") {
-      // Ein Camp läuft Montag bis Freitag. Am Wochenende ist an einer Schule
-      // niemand da -- und ein Camp, das am Samstag endet, wird als Einzeltermin
-      // nachgetragen statt die Regel dafür aufzuweichen.
-      if (wt === 0 || wt === 6) continue;
-    } else {
-      if (wochentage.indexOf(wt) === -1) continue;
-    }
+    // Eine AG wiederholt sich woechentlich an den gewaehlten Wochentagen. Das
+    // frueher daneben stehende taegliche Muster gehoerte allein zum Typ "camp"
+    // und ist mit ihm entfallen.
+    if (wochentage.indexOf(wt) === -1) continue;
 
     const iso = isoAusDatum(d);
     if (ausnahmen.has(iso)) continue;

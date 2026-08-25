@@ -112,7 +112,7 @@ async function erzeugeNachweisPdf(d, vorgang, knopf, nurBlob) {
 
     // --- Kopfdaten ---
     const kopf = [
-      ["Maßnahme", d.massnahmeTitel + (d.typ === "camp" ? "  (Ferien-Camp)" : "")],
+      ["Maßnahme", d.massnahmeTitel],
       ["Rahmen", [d.rahmen, d.zielgruppe].filter(Boolean).join("  ·  ") || "—"],
       ["Schule", [d.schuleName, d.schuleAnschrift].filter(Boolean).join(", ") || "—"],
       ["Ansprechpartner", d.ansprechpartner
@@ -304,7 +304,6 @@ async function erzeugeSammelPdf(vonIso, bisIso, knopf) {
       zeilen.push([
         m.titel,
         schule ? schule.name : "",
-        m.typ === "camp" ? "Camp" : "AG",
         nameVon(m.verantwortlichUsername),
         String(s.durchgefuehrt) + " / " + String(s.geplant),
         String(s.ausgefallen),
@@ -322,19 +321,21 @@ async function erzeugeSammelPdf(vonIso, bisIso, knopf) {
     } else {
       doc.autoTable({
         startY: y,
-        head: [["Maßnahme", "Schule", "Art", "Durchführung", "Einheiten", "Ausfälle", "Teilnahmen", "Schnitt", "Zeit"]],
+        head: [["Maßnahme", "Schule", "Durchführung", "Einheiten", "Ausfälle", "Teilnahmen", "Schnitt", "Zeit"]],
         body: zeilen,
-        foot: [["Gesamt", "", "", "", gDurch + " / " + gGeplant, String(gAus), String(gTeil),
+        foot: [["Gesamt", "", "", gDurch + " / " + gGeplant, String(gAus), String(gTeil),
           gDurch ? String(Math.round((gTeil / gDurch) * 10) / 10) : "0", stundenText(gMin)]],
         theme: "striped",
         styles: { fontSize: 8.5, cellPadding: 1.8 },
         headStyles: { fillColor: [26, 86, 160], textColor: 255 },
         footStyles: { fillColor: [240, 242, 246], textColor: 30, fontStyle: "bold" },
+        // Die Spalte "Art" ist mit dem Typ "camp" entfallen; ihre 16 mm sind auf
+        // Massnahme und Schule verteilt, damit die Tabelle gleich breit bleibt.
         columnStyles: {
-          0: { cellWidth: 52 }, 1: { cellWidth: 46 }, 2: { cellWidth: 16 }, 3: { cellWidth: 40 },
-          4: { cellWidth: 24, halign: "right" }, 5: { cellWidth: 20, halign: "right" },
-          6: { cellWidth: 24, halign: "right" }, 7: { cellWidth: 20, halign: "right" },
-          8: { cellWidth: "auto", halign: "right" }
+          0: { cellWidth: 60 }, 1: { cellWidth: 54 }, 2: { cellWidth: 40 },
+          3: { cellWidth: 24, halign: "right" }, 4: { cellWidth: 20, halign: "right" },
+          5: { cellWidth: 24, halign: "right" }, 6: { cellWidth: 20, halign: "right" },
+          7: { cellWidth: "auto", halign: "right" }
         }
       });
     }
