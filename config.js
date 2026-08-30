@@ -109,6 +109,18 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
+    version: "1.4",
+    groups: [
+      {
+        title: "Beim Sitzungsende wird der Bildschirm geräumt",
+        items: [
+          "Lief die Anmeldung ab, während die App offen war, blieben AGs, Termine und Nachweise im Browser stehen — unsichtbar, im Seitenquelltext aber weiter lesbar. Jetzt wird alles entfernt: die Seite, die vier Dialoge daneben und der eigene Name oben rechts.",
+          "Bisher blieb die App bei einer abgelaufenen Anmeldung einfach offen stehen und meldete den Fehler nur nebenbei. Jetzt führt jeder Weg auf den Anmelde-Hinweis."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.3",
     groups: [
       {
