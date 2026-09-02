@@ -109,76 +109,12 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
-    version: "1.5",
-    groups: [
-      {
-        title: "Der Reiter „Info“ erklärt jetzt, was die App wirklich tut",
-        items: [
-          "Dort stand bisher ein einzelner Satz. Jetzt steht da, wofür die einzelnen Reiter da sind, was die App mit den Eingaben macht und wo etwas anderes hingehört.",
-          "Am Funktionsumfang ändert sich nichts — nur an der Beschreibung."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.4",
-    groups: [
-      {
-        title: "Beim Sitzungsende wird der Bildschirm geräumt",
-        items: [
-          "Lief die Anmeldung ab, während die App offen war, blieben AGs, Termine und Nachweise im Browser stehen — unsichtbar, im Seitenquelltext aber weiter lesbar. Jetzt wird alles entfernt: die Seite, die vier Dialoge daneben und der eigene Name oben rechts.",
-          "Bisher blieb die App bei einer abgelaufenen Anmeldung einfach offen stehen und meldete den Fehler nur nebenbei. Jetzt führt jeder Weg auf den Anmelde-Hinweis."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.3",
-    groups: [
-      {
-        title: "Ferien-Camps sind aus dem Schulsport-Planer heraus",
-        items: [
-          "Der Planer ist jetzt allein für die AGs an Schulen und im Hort da. Die Auswahl „Art“ beim Anlegen einer Maßnahme, der Knopf „+ Neues Camp“, der Filter „AGs und Camps“ im Wochenplan und das Camp-Band über dem Zeitraster sind entfallen.",
-          "Für Ferien-Camps gibt es das eigene Tool „Fußballcamp“. Wer dort plant und anmeldet, führt beides nicht mehr an zwei Stellen.",
-          "An bestehenden AGs, ihren Terminen und allen bereits ausgestellten Nachweisen ändert sich nichts."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.2",
-    groups: [
-      {
-        title: "Der richtige Vereinsname",
-        items: [
-          "Im Kopf der PDFs stand „1. SC 1911 e.V. Heilbad Heiligenstadt“. Richtig ist „1. SC 1911 Heiligenstadt e.V.“ — neue PDFs tragen den richtigen Namen. Schon verschickte PDFs ändern sich nicht."
-        ]
-      }
-    ]
-  },
-  {
-    version: "1.1",
-    groups: [
-      {
-        title: "Am Handy",
-        items: [
-          "Bisher brach die Reiterleiste selbst um, die rechte Reiter-Gruppe darin aber nicht: Sie rutschte als ein Stück in die zweite Zeile und lief dort weiter über den rechten Rand hinaus. Jetzt bricht auch sie um, sobald sie zu breit wird. Zu sehen ist das nur, wenn genug Reiter nebeneinanderstehen — bis dahin sieht alles aus wie bisher."
-        ]
-      }
-    ]
-  },
-  {
     version: "1.0",
     groups: [
       {
-        title: "Der Reiter „Administrieren“ heißt jetzt „Verwaltung“",
-        items: [
-          "Nur der Name hat sich geändert — Inhalt, Zugang und Rechte sind dieselben. In den anderen Vereins-Tools heißt der rechte Reiter „Verwaltung“ oder „Einstellungen“; dieser hier war der einzige mit einem dritten Namen."
-        ]
-      },
-      {
         title: "Wochenplan für Schul-AGs",
         items: [
+          "Der Planer ist allein für die AGs an Schulen und im Hort da.",
           "Jede AG wird einmal als Serie angelegt — Schule, Ort, Wochentag, Uhrzeit und Zeitraum. Daraus entstehen alle einzelnen Termine des Schuljahres von selbst.",
           "Ferien, Feiertage und Schließtage sind hinterlegt: AG-Termine fallen dort automatisch weg.",
           "Der Wochenplan zeigt Montag bis Freitag nebeneinander, jede Schule in ihrer eigenen Farbe. Samstag und Sonntag erscheinen nur, wenn dort wirklich etwas stattfindet.",
@@ -188,10 +124,17 @@ const APP_CHANGELOG = [
         ]
       },
       {
+        title: "Melden nach der Einheit",
+        items: [
+          "Nach jeder AG wird gemeldet, ob sie stattgefunden hat und wie viele Kinder da waren.",
+          "Fällt sie aus, wird der Grund aus einer Liste gewählt. Die Liste trennt, was dem Verein zur Last fällt, von allem anderen — genau die Unterscheidung, nach der eine Behörde fragt.",
+          "Der Reiter „Melden“ zeigt oben, wie viele eigene Termine noch auf eine Meldung warten."
+        ]
+      },
+      {
         title: "Nachweis über durchgeführte Stunden",
         items: [
-          "Nach jeder AG wird gemeldet, ob sie stattgefunden hat und wie viele Kinder da waren. Fällt sie aus, wird der Grund aus einer Liste gewählt — so steht später im Nachweis, warum ein Termin ausgefallen ist.",
-          "Aus diesen Meldungen entsteht auf Knopfdruck ein Durchführungsnachweis als PDF: Schule, Ort, Ansprechpartner, jeder einzelne Termin mit Datum und Teilnehmerzahl, dazu die Summen und die geleisteten Stunden.",
+          "Aus den Meldungen entsteht auf Knopfdruck ein Durchführungsnachweis als PDF: Schule, Ort, Ansprechpartner, jeder einzelne Termin mit Datum und Teilnehmerzahl, dazu die Summen und die geleisteten Stunden.",
           "Eine Sammelübersicht fasst alle Maßnahmen eines Zeitraums auf einem Blatt zusammen.",
           "Die Schule kann den Nachweis digital bestätigen: Sie bekommt einen Link, sieht dort die Aufstellung und unterschreibt direkt am Bildschirm. Ein Zugang zu den Vereins-Tools ist dafür nicht nötig.",
           "Bestätigte Nachweise sind eingefroren. Wird später eine Teilnehmerzahl korrigiert, ändert sich das bereits unterschriebene Dokument nicht mehr.",
@@ -199,30 +142,41 @@ const APP_CHANGELOG = [
         ]
       },
       {
+        title: "Verwaltung",
+        items: [
+          "Schulen und Orte pflegen; jede Schule bekommt ihre eigene Farbe im Wochenplan.",
+          "Ferien, Feiertage und Schließtage hinterlegen — daraus ergibt sich, welche Termine ausfallen.",
+          "Die Liste der Ausfallgründe lässt sich erweitern.",
+          "Ein abgeschlossenes Schuljahr wandert ins Archiv, damit die laufende Datei klein und schnell bleibt."
+        ]
+      },
+      {
         title: "Wer darf was",
         items: [
           "Sehen: Wochenplan, Maßnahmen und Kennzahlen — für alle, die mit den Schul-AGs zu tun haben.",
           "Melden: Wer als Übungsleiter für eine AG eingeteilt ist, meldet deren Termine. Fremde Maßnahmen sind nicht nur ausgeblendet, sondern serverseitig gesperrt — ein Nachweis soll sich nicht von anderer Seite ändern lassen.",
-          "Bearbeiten: Schulen, Orte, Maßnahmen und Nachweise pflegen. Das ist Sache der Leitung und der Geschäftsstelle.",
-          "Administrieren: Ferienzeiten, Ausfallgründe und der Abschluss eines Schuljahres."
+          "Bearbeiten: Maßnahmen anlegen und ändern, Termine neu erzeugen, Nachweise erstellen und den Bestätigungslink vergeben. Das ist Sache der Leitung und der Geschäftsstelle.",
+          "Administrieren: Schulen, Orte, Ferienzeiten, Ausfallgründe und der Abschluss eines Schuljahres im Reiter „Verwaltung“.",
+          "Der Reiter „Info“ steht jedem angemeldeten Nutzer offen.",
+          "Fällt die Anmeldung weg, während die App offen ist, räumt sie den Bildschirm samt der vier Dialoge daneben und dem eigenen Namen oben rechts, statt AGs, Termine und Nachweise im Hintergrund lesbar zu lassen."
         ]
       },
       {
         title: "Bedienung am Handy",
         items: [
           "Am Handy wird aus dem Wochenraster eine Tagesliste — ein Raster mit fünf Spalten ist auf einem kleinen Bildschirm nicht lesbar.",
-          "Der Reiter „Melden“ zeigt oben, wie viele eigene Termine noch auf eine Meldung warten. Zahl eintippen, Status wählen, fertig.",
+          "Melden geht in drei Griffen: Zahl eintippen, Status wählen, fertig.",
           "Zu jedem Termin stehen Ort, Zugang und die Ausstattung vor Ort — dazu, was aus dem Vereinsheim mitzunehmen ist. Damit kommt auch eine Vertretung zurecht."
         ]
       },
       {
-        title: "Daten & Speicherung",
+        title: "Daten und Speicherung",
         items: [
           "Gespeichert wird in der Vereins-Nextcloud über die zentrale Anmeldung der Tools-Übersicht — ein eigenes Passwort braucht es nicht.",
           "Von den teilnehmenden Kindern wird ausschließlich die Anzahl erfasst. Namen von Schülerinnen und Schülern werden in diesem Werkzeug bewusst nicht gespeichert.",
           "Von der bestätigenden Person an der Schule werden Name, Funktion, Unterschrift und Zeitpunkt festgehalten — als Nachweis der erbrachten Leistung.",
           "Ein Bestätigungslink läuft nach 30 Tagen ab und kann jederzeit zurückgezogen oder neu ausgestellt werden.",
-          "Abgeschlossene Schuljahre wandern in ein Archiv, damit die laufende Datei klein und schnell bleibt. Ausgestellte Nachweise bleiben dabei erhalten."
+          "Abgeschlossene Schuljahre wandern in ein Archiv. Ausgestellte Nachweise bleiben dabei erhalten."
         ]
       }
     ]
