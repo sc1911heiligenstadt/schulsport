@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Durchführungsnachweis bestätigen</title>
+<meta name="theme-color" content="#1a56a0" />
+<!-- Diese Seite ist nur über einen persönlichen Link erreichbar und gehört
+     nicht in eine Suchmaschine. -->
+<meta name="robots" content="noindex, nofollow" />
+<meta name="referrer" content="no-referrer" />
+<link rel="stylesheet" href="style.css?v=1.0" />
+</head>
+<!-- Bewusst KEIN Link zurück zur Tools-Übersicht: wer hier landet, ist eine
+     Mitarbeiterin der Schule und hat dort nichts zu suchen. -->
+<body class="freigabe-seite">
+
+<div class="freigabe-kopf">
+  <img src="https://sc1911heiligenstadt.github.io/logo.svg" alt="1. SC 1911 Heiligenstadt e.V." />
+  <h1>Durchführungsnachweis bestätigen</h1>
+</div>
+
+<main>
+
+  <div class="card" id="lade-schirm">
+    <p class="muted">Der Nachweis wird geladen …</p>
+  </div>
+
+  <div class="card" id="zu-schirm" style="display:none;">
+    <h2 id="zu-titel">Dieser Link ist nicht gültig</h2>
+    <p class="muted" id="zu-text"></p>
+    <p class="muted">Bei Fragen hilft die Geschäftsstelle des Vereins weiter:
+      <a href="mailto:info@sc1911-heiligenstadt.de">info@sc1911-heiligenstadt.de</a>,
+      Telefon 03606 612206.</p>
+  </div>
+
+  <div id="inhalt" style="display:none;">
+
+    <div class="card">
+      <h2 id="nw-titel"></h2>
+      <p class="muted">
+        Der 1. SC 1911 Heiligenstadt bittet um Ihre Bestätigung, dass die unten
+        aufgeführten Einheiten wie angegeben stattgefunden haben.
+      </p>
+      <div id="kopfdaten"></div>
+    </div>
+
+    <div class="card">
+      <h2>Einzelne Termine</h2>
+      <div id="terminliste"></div>
+    </div>
+
+    <div class="card">
+      <h2>Zusammenfassung</h2>
+      <div id="summen"></div>
+    </div>
+
+    <div class="card" id="aktions-karte">
+      <h2>Ihre Rückmeldung</h2>
+
+      <div class="subnav" id="weg-wahl">
+        <button type="button" data-weg="bestaetigen" class="active">Bestätigen</button>
+        <button type="button" data-weg="rueckfrage">Etwas stimmt nicht</button>
+      </div>
+
+      <div id="weg-bestaetigen" style="margin-top:16px;">
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="f-name">Ihr Name</label>
+            <input type="text" id="f-name" maxlength="120" autocomplete="name" />
+          </div>
+          <div class="form-field">
+            <label for="f-funktion">Funktion (optional)</label>
+            <input type="text" id="f-funktion" maxlength="120" placeholder="z. B. Schulleitung, Sekretariat" />
+          </div>
+        </div>
+        <label style="display:block;font-size:12px;color:var(--muted);font-weight:600;margin:10px 0 4px;">Unterschrift</label>
+        <div class="signature-wrap">
+          <canvas class="signature-canvas" id="sig-canvas"></canvas>
+        </div>
+        <div class="btn-row" style="justify-content:flex-start;">
+          <button type="button" class="btn secondary small" id="btn-sig-clear">Unterschrift löschen</button>
+        </div>
+      </div>
+
+      <div id="weg-rueckfrage" style="display:none; margin-top:16px;">
+        <div class="form-field">
+          <label for="f-rf-name">Ihr Name</label>
+          <input type="text" id="f-rf-name" maxlength="120" autocomplete="name" />
+        </div>
+        <div class="form-field">
+          <label for="f-rf-text">Was stimmt nicht?</label>
+          <textarea id="f-rf-text" maxlength="2000" rows="5"
+            placeholder="Zum Beispiel: Am 15.10. hat die AG nicht stattgefunden."></textarea>
+        </div>
+        <p class="muted">Ihre Rückmeldung geht an die Leitung des Vereins. Der Nachweis wird dann korrigiert und Ihnen erneut vorgelegt.</p>
+      </div>
+
+      <details class="ds-block">
+        <summary>Hinweise zum Datenschutz</summary>
+        <p>Verantwortlich für die Verarbeitung ist der 1. SC 1911 Heiligenstadt,
+        Leineberg 2, 37308 Heilbad Heiligenstadt, Telefon 03606 612206,
+        <a href="mailto:info@sc1911-heiligenstadt.de">info@sc1911-heiligenstadt.de</a>.</p>
+        <p>Wenn Sie diesen Nachweis bestätigen, werden Ihr Name, die angegebene
+        Funktion, Ihre Unterschrift und der Zeitpunkt der Bestätigung
+        gespeichert. Zusätzlich werden die Internetadresse (IP) und die
+        Gerätekennung Ihres Browsers festgehalten — sie belegen, wann und von wo
+        die Bestätigung abgegeben wurde. Bei einer Rückfrage werden Ihr Name und
+        Ihr Text gespeichert.</p>
+        <p>Zweck ist der Nachweis der vom Verein erbrachten Leistung gegenüber
+        der Schule sowie gegenüber Behörden und Fördermittelgebern. Rechtliche
+        Grundlage ist Art. 6 Abs. 1 lit. b und lit. f DSGVO — die Durchführung
+        der Vereinbarung zwischen Schule und Verein sowie das berechtigte
+        Interesse an einem belegbaren Nachweis.</p>
+        <p>Die Daten werden auf Servern in Deutschland gespeichert, die ein
+        Auftragsverarbeiter für den Verein betreibt. Eine Weitergabe erfolgt nur,
+        soweit sie für den Nachweiszweck erforderlich oder gesetzlich
+        vorgeschrieben ist. Die Aufbewahrung richtet sich nach den Fristen für
+        Verwendungsnachweise.</p>
+        <p>Sie haben das Recht auf Auskunft, Berichtigung, Löschung,
+        Einschränkung der Verarbeitung, Datenübertragbarkeit und Widerspruch.
+        Wenden Sie sich dafür an die oben genannte Anschrift. Beschwerden nimmt
+        der Thüringer Landesbeauftragte für den Datenschutz und die
+        Informationsfreiheit entgegen.</p>
+        <p><a href="https://www.sc1911-heiligenstadt.de/datenschutz/" target="_blank" rel="noopener">Datenschutzerklärung des Vereins</a>
+        &middot;
+        <a href="https://www.sc1911-heiligenstadt.de/impressum-2/" target="_blank" rel="noopener">Impressum</a></p>
+      </details>
+
+      <p class="hinweis fehler" id="fehler-text" style="display:none;"></p>
+
+      <div class="btn-row" style="justify-content:flex-start;">
+        <button type="button" class="btn success" id="btn-senden">Bestätigen und absenden</button>
+      </div>
+      <p class="muted" style="margin-top:8px;">
+        Zeitpunkt, Internetadresse und Gerätekennung werden als Nachweis der
+        Unterschrift mitgespeichert.
+      </p>
+    </div>
+
+  </div>
+
+  <div class="card" id="danke" style="display:none;">
+    <h2 id="danke-titel">Vielen Dank</h2>
+    <p class="muted" id="danke-text"></p>
+    <p class="muted">Sie können dieses Fenster jetzt schließen.</p>
+  </div>
+
+</main>
+
+<script src="signature-pad.js?v=1.0"></script>
+<script src="db-bestaetigung.js?v=1.0"></script>
+<script src="bestaetigung.js?v=1.0"></script>
+</body>
+</html>

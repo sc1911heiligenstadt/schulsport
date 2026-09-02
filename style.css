@@ -1,0 +1,396 @@
+:root {
+  --green: #2d8c4e;
+  --green-light: #e8f5ed;
+  --red: #c0392b;
+  --red-light: #fdecea;
+  --blue: #1a56a0;
+  --blue-light: #e8f0fb;
+  --gold: #c9941f;
+  --gold-light: #fbf2e1;
+  --gray: #f4f5f7;
+  --border: #dde1e8;
+  --text: #1e2330;
+  --muted: #6b7280;
+  --white: #ffffff;
+  --shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  --radius: 12px;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: "Segoe UI", system-ui, sans-serif;
+  background: #eef1f6;
+  color: var(--text);
+  min-height: 100vh;
+}
+header {
+  background: var(--blue);
+  color: white;
+  padding: 16px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  flex-wrap: wrap;
+}
+header h1 { font-size: 20px; font-weight: 600; display: flex; align-items: center; gap: 8px; flex: 1 1 200px; }
+/* Byte-gleich zur restlichen Flotte (ausbildungsplan, Vereinsaufgaben u.a.) --
+   ein abgerundeter Knopf, kein nackter Textlink. flex: 0 0 auto ist Pflicht,
+   sonst zieht ihn der Header zwischen h1 und .header-right auseinander. */
+.back-to-dashboard {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: white;
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.15);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  padding: 8px 16px;
+  border-radius: 999px;
+  white-space: nowrap;
+  flex: 0 0 auto;
+  transition: background 0.15s ease;
+}
+.back-to-dashboard:hover { background: rgba(255, 255, 255, 0.28); text-decoration: none; }
+.header-right { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; flex: 1 1 200px; justify-content: flex-end; }
+.header-logo { height: 44px; width: auto; display: block; }
+.header-user { font-size: 13px; opacity: 0.95; display: flex; align-items: center; gap: 6px; }
+
+nav {
+  display: flex;
+  gap: 4px;
+  background: var(--white);
+  padding: 8px 28px 0;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+nav button {
+  background: none;
+  border: none;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 3px solid transparent;
+  border-radius: 8px 8px 0 0;
+}
+nav button:hover { background: var(--gray); }
+nav button.active { color: var(--blue); border-bottom-color: var(--blue); }
+/* Das margin haengt am Wrapper, damit die Gruppe rechts bleibt, auch wenn
+   Administrieren fuer Nicht-Admins ausgeblendet ist. */
+/* flex-wrap, weil die Gruppe sonst als ein Stueck ueber den rechten Rand
+   hinauslaeuft: bei 375px bleiben neben dem linken Reiter nur ~319px, und
+   vier Reiter brauchen mehr. Ohne den Umbruch ist der letzte nicht antippbar. */
+nav .nav-right { margin-left: auto; display: flex; flex-wrap: wrap; gap: inherit; }
+.nav-zaehler {
+  display: inline-block; min-width: 18px; padding: 1px 6px; margin-left: 4px;
+  background: var(--red); color: white; border-radius: 9px;
+  font-size: 11px; font-weight: 700; line-height: 16px; text-align: center;
+}
+
+main { max-width: 1100px; margin: 0 auto; padding: 24px 16px 60px; }
+.tab-section { display: none; }
+.tab-section.active { display: block; }
+
+.card {
+  background: var(--white);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 20px;
+  margin-bottom: 18px;
+}
+.card h2 { font-size: 17px; margin-bottom: 14px; color: var(--blue); }
+.card h3 { font-size: 15px; margin-bottom: 10px; }
+.card-header-row { display: flex; align-items: center; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.card-header-row h2 { margin-bottom: 0; }
+/* Byte-gleich zur Flotte (ausbildungsplan, Vereinsaufgaben). Diese Klassen
+   erscheinen in jeder App an derselben Stelle -- wer sie hier eigenwillig
+   stylt, macht genau den Unterschied sichtbar, der auffaellt. */
+.muted { color: var(--muted); font-size: 13px; }
+.empty-state { text-align: center; padding: 40px 20px; color: var(--muted); }
+
+.connect-screen { max-width: 560px; margin: 60px auto; text-align: center; }
+.connect-screen .card { padding: 32px; text-align: left; }
+.connect-screen p { color: var(--muted); margin-bottom: 20px; line-height: 1.5; }
+.btn-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 14px; }
+
+button.btn, a.btn {
+  background: var(--blue);
+  color: white;
+  border: none;
+  padding: 10px 18px;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+button.btn:hover, a.btn:hover { opacity: 0.9; }
+button.btn.secondary, a.btn.secondary { background: var(--gray); color: var(--text); border: 1px solid var(--border); }
+button.btn.success { background: var(--green); }
+button.btn.danger { background: var(--red); }
+button.btn.small, a.btn.small { padding: 6px 12px; font-size: 13px; }
+button.btn:disabled { opacity: 0.6; cursor: default; }
+
+/* auto-fit braucht eine echte Mindestbreite. Mit minmax(0, …) legt der Browser
+   eine Spalte JE KIND an — die Felder stehen dann in Haarspalten nebeneinander. */
+.form-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px; margin-bottom: 14px; }
+.form-grid.wide { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+.form-grid > .form-field { min-width: 0; }
+.form-field label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 4px; font-weight: 600; }
+.form-field input[type="text"],
+.form-field input[type="tel"],
+.form-field input[type="email"],
+.form-field input[type="date"],
+.form-field input[type="time"],
+.form-field input[type="number"],
+.form-field select,
+.form-field textarea {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 16px;   /* 16px verhindert das Hineinzoomen auf iOS */
+  font-family: inherit;
+}
+.form-field textarea { resize: vertical; min-height: 70px; }
+.form-field input:disabled, .form-field select:disabled, .form-field textarea:disabled {
+  background: var(--gray); color: var(--muted); cursor: not-allowed;
+}
+/* ⚠️ Kaestchen NICHT in .form-field stecken: dort greift input{width:100%} und
+   macht aus jeder Checkbox einen Balken. Deshalb eine eigene Zeile. */
+.check-zeile { display: flex; align-items: center; gap: 8px; margin: 8px 0; font-size: 14px; }
+.check-zeile input[type="checkbox"] { width: auto; flex: 0 0 auto; }
+
+.subnav { display: flex; gap: 6px; flex-wrap: wrap; }
+.subnav button {
+  background: var(--gray); border: 1px solid var(--border); color: var(--muted);
+  padding: 6px 14px; border-radius: 20px; font-size: 13px; font-weight: 600; cursor: pointer;
+}
+.subnav button.active { background: var(--blue); border-color: var(--blue); color: white; }
+
+.version-badge {
+  font-size: 11px;
+  font-weight: 600;
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  padding: 2px 9px;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+/* Im Info-Tab steht das Badge auf weissem Grund -- die weiss-transparente
+   Fassung oben waere dort unsichtbar. */
+.card .version-badge { background: var(--blue-light); color: var(--blue); border-color: transparent; }
+.save-status { max-width: 1100px; margin: 0 auto; padding: 6px 16px 0; font-size: 12px; color: var(--muted); min-height: 20px; }
+.save-status.fehler { color: var(--red); font-weight: 600; }
+
+/* ---------- Wochennavigation ---------- */
+.wochen-nav { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 14px; }
+.wochen-titel { flex: 1 1 160px; display: flex; flex-direction: column; }
+.wochen-titel strong { font-size: 16px; color: var(--blue); }
+.wochen-titel .muted { font-size: 12px; }
+
+/* ---------- Wochenraster ----------
+   Bewusst KEIN rowspan-Tabellenaufbau wie in der Platzbelegung: dort liegt je
+   Platz und Slot hoechstens eine Belegung. Hier koennen zwei Schulen zur selben
+   Zeit laufen, und die Vor-/Nachbereitung liegt als Rand ueber und unter dem
+   Block. Deshalb je Tag ein position:relative-Container mit absolut gesetzten
+   Bloecken; Ueberlappungen teilen die Spaltenbreite.
+   Feste Spaltenzahl statt auto-fit — auto-fit mit minmax(0,…) legt eine Spalte
+   je Kind an und laesst die Seite am Handy ueberlaufen.
+
+   ⚠️ Die Hoehe kommt aus app.js als Inline-Wert (1px je Minute), NICHT von
+   hier. Bloecke und Zeitmarken sind absolut gesetzt und tragen nichts zum
+   Fluss bei — ohne gesetzte Hoehe faellt das ganze Raster auf 0 zusammen und
+   die Zeitmarken stapeln sich uebereinander. Der 30px-Takt des
+   Hintergrundverlaufs entspricht dabei genau einer halben Stunde. */
+.raster-wrap { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; margin-bottom: 18px; overflow-x: auto; }
+.raster { display: flex; min-width: 720px; }
+/* Kopfhoehe fest, nicht vom Inhalt abhaengig: ein Tag mit Ferien-Zeile haette
+   sonst einen hoeheren Kopf als seine Nachbarn, und die Spalten starteten auf
+   verschiedenen Hoehen. Die Zeitachse links traegt denselben Spacer, sonst
+   laeuft ihre Beschriftung gegen die Bloecke aus dem Takt. */
+.raster { --kopf-hoehe: 54px; }
+.raster-zeit { flex: 0 0 54px; display: flex; flex-direction: column; }
+.raster-zeit-kopf { flex: 0 0 var(--kopf-hoehe); margin-bottom: 4px; }
+.raster-zeit-achse { position: relative; }
+.raster-zeit .marke {
+  position: absolute; left: 0; right: 6px; text-align: right;
+  font-size: 11px; color: var(--muted); transform: translateY(-50%);
+}
+.raster-tage { display: flex; flex: 1 1 auto; gap: 6px; }
+.raster-tag { flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; }
+.raster-tag-kopf { height: var(--kopf-hoehe); text-align: center; font-size: 13px; font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid var(--border); margin-bottom: 4px; }
+.raster-tag-kopf .datum { display: block; font-size: 11px; color: var(--muted); font-weight: 400; }
+.raster-tag-kopf .ferien-name { display: block; font-size: 10px; color: var(--gold); font-weight: 600; }
+.raster-tag.heute .raster-tag-kopf { color: var(--blue); }
+.raster-spalte { position: relative; background: repeating-linear-gradient(to bottom, transparent, transparent 29px, var(--border) 29px, var(--border) 30px); border-radius: 6px; }
+.raster-tag.gesperrt .raster-spalte { background-color: var(--gray); }
+
+.block {
+  position: absolute; border-radius: 6px; padding: 3px 5px; overflow: hidden;
+  font-size: 11px; line-height: 1.25; cursor: pointer; color: white;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+}
+.block .b-zeit { font-weight: 700; display: block; }
+.block .b-titel { display: block; font-weight: 600; }
+.block .b-ort { display: block; opacity: 0.9; }
+.block.status-offen { outline: 2px dashed rgba(255,255,255,0.55); outline-offset: -3px; }
+.block.status-ausgefallen { opacity: 0.55; text-decoration: line-through; }
+/* Vor- und Nachbereitung als schraffierter Rand direkt am Block */
+.block-rand {
+  position: absolute; border-radius: 4px; opacity: 0.4;
+  background-image: repeating-linear-gradient(45deg, rgba(255,255,255,0.65) 0 4px, transparent 4px 8px);
+}
+
+/* ---------- Tagesliste (Handy) ---------- */
+.tagesliste { display: none; }
+.tag-block { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 14px; margin-bottom: 12px; }
+.tag-block h3 { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; }
+.tag-block h3 .muted { font-weight: 400; }
+.tag-block.gesperrt { background: var(--gray); }
+.termin-zeile {
+  display: flex; gap: 10px; align-items: flex-start;
+  padding: 10px; border-radius: 8px; background: var(--gray); margin-top: 8px; cursor: pointer;
+}
+.termin-farbe { flex: 0 0 5px; align-self: stretch; border-radius: 3px; }
+.termin-text { flex: 1 1 auto; min-width: 0; }
+.termin-text .t-titel { font-weight: 600; font-size: 14px; }
+.termin-text .t-zeile { font-size: 12px; color: var(--muted); }
+
+/* ---------- Status-Kennzeichen ---------- */
+.badge { display: inline-block; padding: 2px 9px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.badge.offen { background: var(--gray); color: var(--muted); }
+.badge.durchgefuehrt { background: var(--green-light); color: var(--green); }
+.badge.ausgefallen { background: var(--red-light); color: var(--red); }
+.badge.verschoben { background: var(--gold-light); color: var(--gold); }
+.badge.bestaetigt { background: var(--green-light); color: var(--green); }
+.badge.rueckfrage { background: var(--gold-light); color: var(--gold); }
+.badge.abgelaufen, .badge.widerrufen { background: var(--gray); color: var(--muted); }
+
+/* ---------- Melden ---------- */
+.melde-karte { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; margin-bottom: 12px; border-left: 5px solid var(--border); }
+.melde-karte.faellig { border-left-color: var(--red); }
+.melde-kopf { display: flex; justify-content: space-between; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.melde-kopf .m-titel { font-weight: 700; font-size: 15px; }
+.melde-kopf .m-datum { font-size: 13px; color: var(--muted); }
+.melde-ort { font-size: 13px; color: var(--muted); margin-bottom: 10px; }
+.melde-ort dt { font-weight: 600; color: var(--text); display: inline; }
+.melde-ort dd { display: inline; margin: 0 0 0 4px; }
+.melde-ort div { margin-bottom: 2px; }
+.status-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+.status-chips button {
+  border: 1px solid var(--border); background: var(--white); color: var(--muted);
+  padding: 8px 14px; border-radius: 20px; font-size: 14px; font-weight: 600; cursor: pointer;
+}
+.status-chips button.aktiv[data-status="durchgefuehrt"] { background: var(--green); border-color: var(--green); color: white; }
+.status-chips button.aktiv[data-status="ausgefallen"] { background: var(--red); border-color: var(--red); color: white; }
+.status-chips button.aktiv[data-status="verschoben"] { background: var(--gold); border-color: var(--gold); color: white; }
+
+/* ---------- Listen und Tabellen ---------- */
+.liste-zeile {
+  display: flex; gap: 12px; align-items: center; padding: 12px;
+  border-bottom: 1px solid var(--border); flex-wrap: wrap;
+}
+.liste-zeile:last-child { border-bottom: none; }
+.liste-zeile .lz-haupt { flex: 1 1 220px; min-width: 0; }
+.liste-zeile .lz-titel { font-weight: 600; font-size: 14px; }
+.liste-zeile .lz-unter { font-size: 12px; color: var(--muted); }
+.liste-zeile .lz-knoepfe { display: flex; gap: 6px; flex-wrap: wrap; }
+
+/* ⚠️ table-layout:fixed ist Pflicht: main haengt in einem Flex-Fluss und waechst
+   sonst mit der Wunschbreite der Tabelle — ein max-width am Scroll-Container
+   hilft dagegen NICHT, weil die Prozentangabe gegen den bereits aufgezogenen
+   Vorfahren rechnet. */
+.tabelle-scroll { overflow-x: auto; max-width: 100%; }
+table.daten { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: fixed; }
+table.daten th, table.daten td { padding: 8px 10px; border-bottom: 1px solid var(--border); text-align: left; vertical-align: top; word-break: break-word; }
+table.daten th { font-size: 12px; color: var(--muted); font-weight: 700; }
+/* Kopf folgt dem Wert: die Klasse gehoert an th UND td, sonst stehen Zahl und
+   Ueberschrift auf verschiedenen Kanten. */
+table.daten th.num, table.daten td.num { text-align: right; }
+table.daten tr.summe td { font-weight: 700; border-top: 2px solid var(--border); }
+
+/* ---------- Kennzahlen ---------- */
+.kennzahlen { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.kennzahl { background: var(--white); border-radius: var(--radius); box-shadow: var(--shadow); padding: 16px; }
+.kennzahl .kz-wert { font-size: 26px; font-weight: 700; color: var(--blue); line-height: 1.1; }
+.kennzahl .kz-label { font-size: 12px; color: var(--muted); margin-top: 4px; }
+
+/* ---------- Dialoge ---------- */
+.overlay {
+  display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  z-index: 1000; padding: 20px; overflow-y: auto;
+}
+.overlay.offen { display: flex; align-items: flex-start; justify-content: center; }
+/* max-height + eigenes Scrollen an der BASISKLASSE, damit jeder neue Dialog es
+   erbt und nicht einer davon unten aus dem Bild waechst. */
+.dialog {
+  background: var(--white); border-radius: var(--radius); box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  width: 100%; max-width: 720px; margin: auto;
+  max-height: calc(100vh - 40px); display: flex; flex-direction: column;
+}
+.dialog-schmal { max-width: 480px; }
+.dialog-kopf { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding: 16px 20px; border-bottom: 1px solid var(--border); }
+.dialog-kopf h2 { font-size: 17px; color: var(--blue); }
+.dialog-schliessen { background: none; border: none; font-size: 26px; line-height: 1; color: var(--muted); cursor: pointer; padding: 0 4px; }
+.dialog-inhalt { padding: 20px; overflow-y: auto; flex: 1 1 auto; }
+.dialog-fuss { display: flex; gap: 10px; padding: 14px 20px; border-top: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
+
+.hinweis { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 12px; line-height: 1.5; }
+.hinweis.info { background: var(--blue-light); color: var(--blue); }
+.hinweis.warnung { background: var(--gold-light); color: #7a5a10; }
+.hinweis.fehler { background: var(--red-light); color: var(--red); }
+.hinweis.erfolg { background: var(--green-light); color: var(--green); }
+
+.link-box {
+  display: flex; gap: 8px; align-items: center; background: var(--gray);
+  border: 1px solid var(--border); border-radius: 8px; padding: 8px 10px; margin: 10px 0;
+}
+.link-box input { flex: 1 1 auto; min-width: 0; border: none; background: none; font-size: 13px; font-family: monospace; }
+
+#changelog-list { display: flex; flex-direction: column; gap: 8px; }
+.changelog-entry { display: flex; flex-direction: column; gap: 10px; font-size: 13px; }
+.changelog-entry .cv { font-weight: 700; color: var(--blue); }
+.changelog-group { display: flex; flex-direction: column; gap: 4px; }
+.changelog-group .cg-title { font-weight: 700; font-size: 14px; color: var(--blue); text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 2px; }
+.changelog-group .cg-items { margin: 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; color: var(--text); }
+
+.chip-liste { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 6px; }
+.chip { background: var(--gray); border: 1px solid var(--border); border-radius: 20px; padding: 3px 10px; font-size: 12px; display: inline-flex; align-items: center; gap: 6px; }
+.chip button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; line-height: 1; padding: 0; }
+
+/* ---------- Handy ----------
+   Unter 768px wird aus dem Raster eine Tagesliste. Fuenf Spalten sind auf
+   375px nicht lesbar, und ein horizontal scrollendes Raster trifft man mit
+   dem Daumen nicht. */
+@media (max-width: 767px) {
+  header { padding: 12px 16px; }
+  nav { padding: 8px 12px 0; }
+  main { padding: 16px 12px 50px; }
+  .save-status { padding: 6px 12px 0; }
+  .card { padding: 16px; }
+  .raster-wrap { display: none; }
+  .tagesliste { display: block; }
+  .kennzahlen { grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); }
+  .dialog-fuss { flex-direction: column-reverse; align-items: stretch; }
+  .dialog-fuss .btn { width: 100%; }
+  .dialog-fuss > span { display: none; }
+}
+
+/* ---------- Bestätigungsseite (login-los) ---------- */
+body.freigabe-seite { background: #eef1f6; }
+body.freigabe-seite main { max-width: 780px; }
+.freigabe-kopf { text-align: center; padding: 24px 16px 8px; }
+.freigabe-kopf img { height: 56px; width: auto; }
+.freigabe-kopf h1 { font-size: 20px; color: var(--blue); margin-top: 10px; }
+.signature-wrap { border: 2px dashed var(--border); border-radius: 8px; background: var(--white); padding: 6px; margin: 8px 0; }
+.signature-canvas { width: 100%; height: 180px; display: block; touch-action: none; cursor: crosshair; }
+.ds-block { background: var(--gray); border-radius: 8px; padding: 12px 14px; font-size: 12px; color: var(--muted); line-height: 1.6; margin: 14px 0; }
+.ds-block summary { cursor: pointer; font-weight: 600; color: var(--text); }
+.ds-block p { margin-top: 8px; }
