@@ -992,7 +992,12 @@ async function init() {
   if (!getSessionToken()) { showConnectScreen(); return; }
 
   try {
-    // Nacheinander, nicht parallel: dav-load liefert das me gratis mit.
+    // Die Team-Kandidaten haengen nicht an dav-load und laufen deshalb ab hier
+    // parallel mit. Vorher starteten sie erst NACH dav-load und me -- ein
+    // voller Roundtrip (~180 ms), den jeder Nutzer vor dem ersten Bild
+    // abwartete. Der catch macht daraus wie bisher eine leere Liste.
+    const kandidatenP = ladeTeamKandidaten().catch(() => []);
+    // dav-load und me weiter nacheinander: dav-load liefert das me gratis mit.
     const data = await gatewayLoad();
     const me = await fetchMe();
     currentUser = me || currentUser;
@@ -1004,7 +1009,7 @@ async function init() {
     const name = ((me.vorname || "") + " " + (me.nachname || "")).trim() || me.username || "";
     document.getElementById("header-user").textContent = name;
 
-    try { teamKandidaten = await ladeTeamKandidaten(); } catch (_) { teamKandidaten = []; }
+    teamKandidaten = await kandidatenP;
 
     startApp();
     renderAlles();

@@ -109,6 +109,17 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
+    version: "1.1",
+    groups: [
+      {
+        title: "Der Planer ist beim Öffnen schneller da",
+        items: [
+          "Die Liste der Übungsleiter für das Team-Feld wurde bisher erst geholt, nachdem der Wochenplan geladen war — ein Roundtrip, auf den jeder vor dem ersten Bild wartete. Jetzt laufen beide Abfragen gemeinsam los."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.0",
     groups: [
       {
