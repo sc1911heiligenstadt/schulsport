@@ -173,7 +173,10 @@ function leeresSchema() {
     einstellungen: {
       standardVorMin: STANDARD_VOR_MIN,
       standardNachMin: STANDARD_NACH_MIN,
-      freigabeTageGueltig: FREIGABE_TAGE_GUELTIG,
+      // freigabeTageGueltig stand hier bis 2026-09-04 und wurde nie gelesen —
+      // die Ablauffrist des Freigabelinks setzt allein der Worker, siehe
+      // config.js. Ein Altbestand darf das Feld behalten, Object.assign unten
+      // wirft nichts weg.
       pushEmpfaenger: []
     },
     schulen: [], orte: [], massnahmen: [], termine: [],

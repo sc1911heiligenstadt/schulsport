@@ -87,9 +87,17 @@ const STANDARD_NACH_MIN = 15;
 
 const SPEICHER_DEBOUNCE_MS = 700;
 
-// Ein Nachweis-Freigabelink läuft nach dieser Zeit ab. 30 Tage, weil eine
-// Schulsekretärin über die Ferien nicht im Haus ist.
-const FREIGABE_TAGE_GUELTIG = 30;
+// ⚠️ Die Ablaufzeit des Nachweis-Freigabelinks steht NICHT hier, sondern im
+// Gateway: SCHULSPORT_FREIGABE_TAGE in ToolsUebersicht/admin-worker.js. Nur der
+// Worker setzt gueltigBis und prüft es auch — der Client hat auf die Frist
+// keinen Einfluss.
+//
+// Bis 2026-09-04 stand an dieser Stelle ein zweites `FREIGABE_TAGE_GUELTIG = 30`
+// samt der Begründung „30 Tage, weil eine Schulsekretärin über die Ferien nicht
+// im Haus ist". Es wurde in einstellungen.freigabeTageGueltig mitgespeichert und
+// sah damit aus wie eine wirksame Einstellung — gelesen hat es nie jemand, weder
+// hier noch im Worker. Wer die Frist ändern will, ändert sie im Worker; die
+// Begründung steht dort jetzt daneben. Gefunden in der Bugjagd vom 04.09.2026.
 
 // Basis für den Bestätigungslink. Lokal wird gegen einen Stub getestet, live
 // zeigt er auf die GitHub-Pages-Adresse dieser App.
