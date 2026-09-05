@@ -117,6 +117,19 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
+    version: "1.3",
+    groups: [
+      {
+        title: "Nachweis und Archivieren warten jetzt wirklich, bis gespeichert ist",
+        items: [
+          "Vor dem Ausstellen eines Nachweises und vor dem Archivieren eines Schuljahres schreibt der Planer den letzten Stand weg — der Server baut den Nachweis aus der Datei, nicht aus dem Bildschirm. Gewartet hat er auf dieses Speichern aber nicht: es lief nebenher weiter.",
+          "Wer eine Teilnehmerzahl korrigiert und gleich danach den Nachweis ausstellt, konnte deshalb die alte Zahl einfrieren — und ein ausgestellter Nachweis lässt sich nicht nachrechnen. Beim Archivieren konnte der nachlaufende Speichervorgang die Verschiebung wieder rückgängig machen.",
+          "Beides passiert jetzt in der richtigen Reihenfolge, auch wenn gerade noch ein anderer Speichervorgang läuft."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.2",
     groups: [
       {

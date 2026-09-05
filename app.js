@@ -212,7 +212,9 @@ function normalizeData(roh) {
 // Ohne den Guard läuft ein zweites dav-save mit veraltetem ETag los und die App
 // meldet „von einem anderen Gerät geändert", obwohl nur eine Person arbeitet.
 
-let saveTimer = null, saveInFlight = false, savePending = false;
+let saveTimer = null;
+let saveLauf = null;      // der gerade laufende Durchgang (Promise) oder null
+let savePending = false;  // waehrend des Schreibens kam eine weitere Änderung
 
 function setSaveStatus(text, fehler) {
   const el = document.getElementById("save-status");
@@ -228,11 +230,38 @@ function markDirty() {
   saveTimer = setTimeout(persistNow, SPEICHER_DEBOUNCE_MS);
 }
 
-async function persistNow() {
+// Speichert JETZT und liefert ein Versprechen, das erst hält, wenn wirklich
+// alles draußen ist.
+//
+// ⚠️ Das „wirklich alles" ist der Kern: Läuft schon ein Save, darf dieser Aufruf
+// nicht einfach zurückkehren. Er merkt die Änderung vor UND wartet auf den
+// laufenden Durchgang mit — der seinerseits so lange weiterschreibt, wie noch
+// etwas ansteht. Bis zum 05.09.2026 setzte der zweite Aufruf nur `savePending`
+// und kehrte sofort zurück; `await persistNow()` versprach damit etwas, das es
+// nicht hielt.
+function persistNow() {
   if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
-  if (!appData || !canEdit()) return;
-  if (saveInFlight) { savePending = true; return; }
-  saveInFlight = true;
+  if (!appData || !canEdit()) return Promise.resolve();
+  if (saveLauf) { savePending = true; return saveLauf; }
+  saveLauf = (async () => {
+    try {
+      do {
+        // ⚠️ VOR dem Schreiben zuruecksetzen, nicht danach: was waehrend des
+        // laufenden Schreibvorgangs dazukommt, muss eine weitere Runde ausloesen.
+        savePending = false;
+        await schreibeJetzt();
+      } while (savePending);
+    } finally {
+      saveLauf = null;
+      savePending = false;
+    }
+  })();
+  return saveLauf;
+}
+
+// Ein einzelner Schreibvorgang. Fängt jeden Fehler selbst ab und meldet ihn im
+// Statusfeld — der Aufrufer soll nicht daran scheitern, dass Nextcloud klemmt.
+async function schreibeJetzt() {
   try {
     appData.meta.stand = new Date().toISOString();
     await gatewaySave(appData);
@@ -245,14 +274,22 @@ async function persistNow() {
     } else {
       setSaveStatus("Speichern fehlgeschlagen: " + e.message, true);
     }
-  } finally {
-    saveInFlight = false;
-    if (savePending) { savePending = false; persistNow(); }
   }
 }
 
-function flushPending() {
-  if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; persistNow(); }
+// ⚠️ MUSS `async` sein und `persistNow()` awaiten. Die beiden Aufrufer —
+// `erstelleFreigabe()` in nachweise.js und das Archivieren in massnahmen.js —
+// schreiben `await flushPending()`, weil sie genau eine Zusage brauchen: erst
+// alles gespeichert, dann darf der Worker mit derselben Datei arbeiten.
+//
+// Ohne das `await` war `await undefined` im nächsten Microtask fertig, während
+// der dav-save noch unterwegs war: der unterschriebene Nachweis fror dann den
+// ALTEN Stand ein (und `snapshot` ist unveränderlich), das Archivieren konnte
+// vom nachlaufenden Save wieder überschrieben werden. Beides lautlos.
+// Flottenstandard, siehe f-autosave-flush.
+async function flushPending() {
+  if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+  await persistNow();
 }
 
 // ---------------------------------------------------------------------------
