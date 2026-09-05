@@ -158,6 +158,7 @@ function renderNachweisListe() {
       <button type="button" class="btn secondary small" data-nw-pdf="${escapeHtml(n.id)}">PDF</button>
       ${status === "offen" ? `<button type="button" class="btn secondary small" data-nw-link="${escapeHtml(n.id)}">Link</button>
         <button type="button" class="btn secondary small" data-nw-mail="${escapeHtml(n.id)}">Mail</button>` : ""}
+      ${status === "abgelaufen" ? `<button type="button" class="btn secondary small" data-nw-verlaengern="${escapeHtml(n.id)}">Verlängern</button>` : ""}
       ${status === "abgelaufen" || status === "rueckfrage" ? `<button type="button" class="btn secondary small" data-nw-neu="${escapeHtml(n.id)}">Neu ausstellen</button>` : ""}
       ${status === "offen" ? `<button type="button" class="btn secondary small" data-nw-widerruf="${escapeHtml(n.id)}">Widerrufen</button>` : ""}
     </div></div>`;
@@ -168,6 +169,7 @@ function renderNachweisListe() {
   el.querySelectorAll("[data-nw-pdf]").forEach((b) => b.addEventListener("click", () => pdfAusVorgang(b.getAttribute("data-nw-pdf"), b)));
   el.querySelectorAll("[data-nw-widerruf]").forEach((b) => b.addEventListener("click", () => nachweisAktion(b.getAttribute("data-nw-widerruf"), "widerrufen", b)));
   el.querySelectorAll("[data-nw-neu]").forEach((b) => b.addEventListener("click", () => nachweisAktion(b.getAttribute("data-nw-neu"), "neu-ausstellen", b)));
+  el.querySelectorAll("[data-nw-verlaengern]").forEach((b) => b.addEventListener("click", () => nachweisAktion(b.getAttribute("data-nw-verlaengern"), "verlaengern", b)));
 }
 
 async function erstelleFreigabe() {
@@ -252,8 +254,12 @@ async function sendeNachweisMail(nachweisId, knopf) {
 async function nachweisAktion(nachweisId, was, knopf) {
   const texte = {
     widerrufen: "Diesen Bestätigungslink widerrufen? Er funktioniert danach nicht mehr.",
-    verlaengern: "Die Laufzeit dieses Links verlängern?",
-    "neu-ausstellen": "Einen neuen Link mit dem AKTUELLEN Stand der Zahlen ausstellen?"
+    verlaengern: "Die Laufzeit dieses Links um 30 Tage verlängern? Der Link bleibt "
+      + "derselbe, und die Schule bestätigt weiterhin GENAU die Zahlen, die ihr "
+      + "ursprünglich vorgelegt wurden.",
+    "neu-ausstellen": "Einen neuen Link mit dem AKTUELLEN Stand der Zahlen ausstellen? "
+      + "Der alte Link wird ungültig. Sind seither Termine gemeldet oder geändert worden, "
+      + "bestätigt die Schule andere Zahlen als vorher."
   };
   if (!confirm(texte[was] || "Fortfahren?")) return;
   knopf.disabled = true;

@@ -117,6 +117,18 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
+    version: "1.2",
+    groups: [
+      {
+        title: "Abgelaufener Bestätigungslink: „Verlängern“ ist jetzt anklickbar",
+        items: [
+          "Meldet sich eine Schule nicht rechtzeitig, lässt sich die Laufzeit ihres Bestätigungslinks um 30 Tage verlängern. Der Server konnte das schon immer, es gab dafür aber keinen Knopf — der einzige Ausweg war „Neu ausstellen“, und das friert die Zahlen neu ein: Sind seither Termine gemeldet oder geändert worden, bestätigt die Schule andere Zahlen als die, die ihr vorgelegt wurden.",
+          "Beide Rückfragen sagen jetzt ausdrücklich, was der Unterschied ist."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.1",
     groups: [
       {
