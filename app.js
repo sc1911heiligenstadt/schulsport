@@ -215,6 +215,12 @@ function normalizeData(roh) {
 let saveTimer = null;
 let saveLauf = null;      // der gerade laufende Durchgang (Promise) oder null
 let savePending = false;  // waehrend des Schreibens kam eine weitere Änderung
+// Für das Sicherheitsnetz beim Verlassen der Seite: „es liegt etwas an" und
+// „der letzte Versuch ging schief". Beides wird eigens gepflegt statt aus
+// saveLauf/savePending abgeleitet — der Debounce-Timer läuft schon, bevor
+// überhaupt geschrieben wird, und genau dieses Fenster fängt das Netz auf.
+let ungespeicherteAenderungen = false;
+let letzterSaveFehlgeschlagen = false;
 
 function setSaveStatus(text, fehler) {
   const el = document.getElementById("save-status");
@@ -225,6 +231,7 @@ function setSaveStatus(text, fehler) {
 
 function markDirty() {
   if (!canEdit()) return;
+  ungespeicherteAenderungen = true;
   setSaveStatus("Änderung wird gespeichert …");
   if (saveTimer) clearTimeout(saveTimer);
   saveTimer = setTimeout(persistNow, SPEICHER_DEBOUNCE_MS);
@@ -265,8 +272,11 @@ async function schreibeJetzt() {
   try {
     appData.meta.stand = new Date().toISOString();
     await gatewaySave(appData);
+    ungespeicherteAenderungen = false;
+    letzterSaveFehlgeschlagen = false;
     setSaveStatus("Gespeichert um " + new Date().toLocaleTimeString("de-DE", { hour: "2-digit", minute: "2-digit" }));
   } catch (e) {
+    letzterSaveFehlgeschlagen = true;
     if (e instanceof ConflictError) {
       setSaveStatus("Die Daten wurden zwischenzeitlich von einem anderen Gerät geändert. Bitte Seite neu laden.", true);
     } else if (e instanceof NotLoggedInError) {
@@ -291,6 +301,26 @@ async function flushPending() {
   if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
   await persistNow();
 }
+
+// Sicherheitsnetz beim Verlassen der Seite: ein noch nicht abgelaufener
+// Debounce-Timer und ein gerade laufender fetch gehen beim Entladen beide
+// verloren — der Browser bricht laufende Requests ab. `flushPending()` allein
+// trägt hier also NICHT; nur der keepalive-Request überlebt das Schließen des
+// Tabs. Wer eine Maßnahme anlegt und binnen einer Sekunde zurück in die
+// Tools-Übersicht klickt, verlor sie sonst — und der Bildschirm hatte vorher
+// das Gegenteil gezeigt (Dialog zu, Maßnahme in der Liste).
+//
+// Nachgefragt wird NUR, wenn dieser Weg nicht trägt (über der 64-KB-Grenze,
+// kein Token, oder der letzte reguläre Versuch schlug schon fehl). Sonst käme
+// die Rückfrage bei jedem Schließen kurz nach einer Änderung — also ständig —
+// und würde reflexhaft weggeklickt, gerade dann, wenn sie einmal wirklich zählt.
+window.addEventListener("beforeunload", (e) => {
+  if (!ungespeicherteAenderungen) return;
+  const abgeschickt = gatewaySaveBeacon(appData);
+  if (abgeschickt && !letzterSaveFehlgeschlagen) return;
+  e.preventDefault();
+  e.returnValue = "";
+});
 
 // ---------------------------------------------------------------------------
 // Tabs und Sichtbarkeit

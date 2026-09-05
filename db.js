@@ -66,6 +66,37 @@ async function gatewaySave(dataObj) {
   gatewayRev = typeof body.rev === "string" ? body.rev : null;
 }
 
+// Speichern beim VERLASSEN der Seite. Ein normaler fetch wird beim Entladen
+// abgebrochen -- nur ein keepalive-Request ueberlebt das Schliessen des Tabs.
+// Byte-gleiches Muster wie in kadermanager/db.js und zwoelf weiteren Apps der
+// Flotte (f-autosave-flush); schulsport hatte es als einzige Gateway-App nicht.
+//
+// Grenze: Browser erlauben fuer keepalive-Requests nur 64 KB Body. Groessere
+// Datenbestaende gehen auf diesem Weg gar nicht raus -- deshalb meldet die
+// Funktion zurueck, ob sie abschicken konnte; der Aufrufer (beforeunload in
+// app.js) fragt dann stattdessen nach.
+const KEEPALIVE_MAX_BYTES = 64 * 1024;
+
+function gatewaySaveBeacon(dataObj) {
+  const token = getSessionToken();
+  if (!token) return false;
+  const payload = { action: "dav-save", app: GATEWAY_APP_ID, data: dataObj };
+  if (gatewayRev) payload.rev = gatewayRev;
+  const body = JSON.stringify(payload);
+  if (new Blob([body]).size > KEEPALIVE_MAX_BYTES) return false;
+  try {
+    fetch(GATEWAY_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+      body,
+      keepalive: true
+    });
+    return true;
+  } catch (_) {
+    return false; // z.B. wenn der Browser den keepalive-Request doch ablehnt
+  }
+}
+
 // Liefert {username, isAdmin, groupIds, vorname, nachname, mannschaften, canEdit, canAdmin}.
 async function fetchMe() {
   // Genau EINMAL aus dem letzten dav-load bedienen, danach wieder echt fragen:

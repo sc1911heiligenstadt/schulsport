@@ -85,7 +85,17 @@ const MOBIL_BREITE          = 768;       // darunter Tagesliste statt Raster
 const STANDARD_VOR_MIN  = 15;
 const STANDARD_NACH_MIN = 15;
 
-const SPEICHER_DEBOUNCE_MS = 700;
+// ⚠️ 0, nicht 700 (geändert 05.09.2026). Hier gibt es nichts zu entprellen:
+// alle dreizehn `markDirty()`-Stellen hängen an diskreten Klicks („Maßnahme
+// speichern", „Schule löschen", „Abgleich anwenden", „Sperrtag hinzufügen") —
+// keine einzige an einem Tastendruck. Der Timer verlängerte damit nur das
+// Fenster, in dem eine Änderung schon gespeichert AUSSAH (Dialog zu, Liste neu
+// gezeichnet) und nirgends lag.
+//
+// Gegen überlappende Saves schützt der In-Flight-Guard in `persistNow()`, nicht
+// dieser Timer; mit 0 fasst `setTimeout` außerdem weiterhin alles zusammen, was
+// in einem Rutsch anfällt.
+const SPEICHER_DEBOUNCE_MS = 0;
 
 // ⚠️ Die Ablaufzeit des Nachweis-Freigabelinks steht NICHT hier, sondern im
 // Gateway: SCHULSPORT_FREIGABE_TAGE in ToolsUebersicht/admin-worker.js. Nur der
@@ -116,6 +126,19 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 // ---------------------------------------------------------------------------
 
 const APP_CHANGELOG = [
+  {
+    version: "1.4",
+    groups: [
+      {
+        title: "Eine gerade angelegte Maßnahme geht beim Schließen nicht mehr verloren",
+        items: [
+          "Nach einer Änderung wartete der Planer erst 0,7 Sekunden, bevor er überhaupt zu speichern anfing — der Dialog war da längst zu und die Maßnahme stand in der Liste. Wer in dieser Zeit den Reiter schloss oder zurück in die Tools-Übersicht klickte, verlor sie, ohne dass irgendetwas darauf hingewiesen hätte.",
+          "Gespeichert wird jetzt sofort. Und beim Verlassen der Seite geht der letzte Stand auf einem Weg raus, den das Schließen des Browserfensters nicht mehr abbricht — so, wie es die übrigen Vereins-Tools schon halten.",
+          "Trägt dieser Weg einmal nicht, fragt der Browser vor dem Schließen nach, statt die Änderung stillschweigend fallen zu lassen."
+        ]
+      }
+    ]
+  },
   {
     version: "1.3",
     groups: [
