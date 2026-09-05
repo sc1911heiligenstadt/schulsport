@@ -127,6 +127,19 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
+    version: "1.5",
+    groups: [
+      {
+        title: "Die Durchführungsquote rechnet jetzt alle geplanten Einheiten mit",
+        items: [
+          "In den Zahlen zur Übersicht zählten nur durchgeführte und ausgefallene Einheiten. Termine, zu denen noch gar keine Meldung vorliegt, und solche, die ein Übungsleiter ausdrücklich als verschoben gemeldet hat, fielen ganz heraus. 20 geplante Einheiten, davon 10 durchgeführt und 10 nie gemeldet, ergaben so 100 %.",
+          "Der Nenner ist jetzt die Zahl der geplanten Einheiten, und die Kachel sagt das auch. Daneben stehen zwei neue Kacheln: „noch nicht gemeldet“ und „verschoben“ — damit die Prozentzahl nicht allein dasteht.",
+          "Am Nachweis und am PDF ändert sich nichts; dort war die Aufteilung schon immer vollständig."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.4",
     groups: [
       {

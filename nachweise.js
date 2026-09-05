@@ -320,7 +320,17 @@ function renderUebersicht() {
     if (d) wochen.add(d.getFullYear() + "-" + kalenderwoche(d));
   });
   const proWoche = wochen.size ? Math.round((s.teilnahmen / wochen.size) * 10) / 10 : 0;
-  const quote = s.geplant ? Math.round((s.durchgefuehrt / (s.durchgefuehrt + s.ausgefallen || 1)) * 100) : 0;
+  // ⚠️ Nenner ist ALLES, was geplant war — nicht nur „durchgeführt + ausgefallen".
+  // Ein VERSCHOBENER Termin ist eine ausdrückliche Meldung „hat nicht
+  // stattgefunden", ein noch gar nicht gemeldeter ist eine offene Lücke; beide
+  // fielen vorher aus Zähler UND Nenner heraus. 20 Einheiten, davon 10
+  // durchgeführt und 10 nie gemeldet, ergaben so 100 %.
+  //
+  // Das ist die Zahl, nach der die Leitung für Behörden und Fördermittelgeber
+  // greift — sie darf nicht besser aussehen als die Lage. Deshalb stehen die
+  // beiden bisher unsichtbaren Gruppen jetzt als eigene Kacheln daneben; das PDF
+  // nennt „davon noch nicht gemeldet" ohnehin schon (pdf.js).
+  const quote = s.geplant ? Math.round((s.durchgefuehrt / s.geplant) * 100) : 0;
 
   // Je Schule
   const proSchule = new Map();
@@ -345,7 +355,9 @@ function renderUebersicht() {
       <div class="kennzahl"><div class="kz-wert">${s.teilnahmen}</div><div class="kz-label">Teilnahmen im Zeitraum</div></div>
       <div class="kennzahl"><div class="kz-wert">${proWoche}</div><div class="kz-label">Kinder je Woche im Schnitt</div></div>
       <div class="kennzahl"><div class="kz-wert">${s.durchgefuehrt}</div><div class="kz-label">durchgeführte Einheiten</div></div>
-      <div class="kennzahl"><div class="kz-wert">${quote}%</div><div class="kz-label">Durchführungsquote</div></div>
+      <div class="kennzahl"><div class="kz-wert">${quote}%</div><div class="kz-label">Durchführungsquote (von ${s.geplant} geplanten)</div></div>
+      <div class="kennzahl"><div class="kz-wert">${s.offen}</div><div class="kz-label">noch nicht gemeldet</div></div>
+      <div class="kennzahl"><div class="kz-wert">${s.verschoben}</div><div class="kz-label">verschoben</div></div>
       <div class="kennzahl"><div class="kz-wert">${proSchule.size}</div><div class="kz-label">Schulen</div></div>
       <div class="kennzahl"><div class="kz-wert">${stundenText(s.minutenGesamt)}</div><div class="kz-label">geleistete Zeit</div></div>
     </div>
