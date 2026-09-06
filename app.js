@@ -1054,10 +1054,23 @@ async function init() {
 
   // Beim Drehen des Handys muss die Ansicht mitwechseln -- sonst bleibt beim
   // Wechsel auf Querformat die Tagesliste stehen.
-  if (window.matchMedia) {
-    const mq = window.matchMedia("(max-width: " + (MOBIL_BREITE - 1) + "px)");
-    if (mq.addEventListener) mq.addEventListener("change", () => { if (aktuellerTab === "woche") renderWoche(); });
-  }
+  //
+  // Bewusst am resize-Event statt am change-Event der MediaQueryList:
+  // MediaQueryList.addEventListener gibt es erst ab iOS 14. Der fruehere
+  // Guard "if (mq.addEventListener)" liess auf aelteren Geraeten ERSATZLOS
+  // gar nichts uebrig -- dort blieb beim Drehen die Tagesliste stehen. Gleiche
+  // Loesung wie ToolsUebersicht/app.js setupSidebarWidgetPlacement().
+  //
+  // Der Vergleich mit dem letzten Stand ist der fruehe Ausstieg: resize feuert
+  // am Handy auch beim Ein- und Ausblenden der Adressleiste, und ein voller
+  // renderWoche() bei jedem dieser Ereignisse waere zu teuer.
+  let warMobil = window.innerWidth < MOBIL_BREITE;
+  window.addEventListener("resize", () => {
+    const istMobil = window.innerWidth < MOBIL_BREITE;
+    if (istMobil === warMobil) return;
+    warMobil = istMobil;
+    if (aktuellerTab === "woche") renderWoche();
+  });
 
   if (!getSessionToken()) { showConnectScreen(); return; }
 

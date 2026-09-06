@@ -127,6 +127,18 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 
 const APP_CHANGELOG = [
   {
+    version: "1.6",
+    groups: [
+      {
+        title: "Die Wochenansicht wechselt auch auf älteren iPhones beim Drehen mit",
+        items: [
+          "Unter 768 Pixel Breite zeigt die Wochenansicht eine Tagesliste, darüber das Raster. Der Wechsel dazwischen hing an einem Ereignis, das erst iOS 14 kennt — auf älteren Geräten passierte beim Drehen des Handys ersatzlos nichts, die Tagesliste blieb im Querformat stehen.",
+          "Der Wechsel hängt jetzt am Größenwechsel des Fensters, den jedes Gerät meldet. Neu gezeichnet wird nur, wenn die 768-Pixel-Grenze wirklich überschritten wird — das Ein- und Ausblenden der Adressleiste löst kein Neuzeichnen aus."
+        ]
+      }
+    ]
+  },
+  {
     version: "1.5",
     groups: [
       {
