@@ -205,7 +205,7 @@ function zeigeFreigabeLink(nachweisId, urlDirekt) {
 
   document.getElementById("freigabe-inhalt").innerHTML = `
     <p class="muted">Mit diesem Link sieht die Schule den Nachweis und kann ihn unterschreiben. Ein Zugang zu den Vereins-Tools ist dafür nicht nötig.</p>
-    ${url ? `<div class="link-box"><input type="text" id="freigabe-url" readonly value="${escapeHtml(url)}" />
+    ${url ? `<div class="link-box"><input type="text" id="freigabe-url" readonly aria-label="Freigabe-Link für die Schule" value="${escapeHtml(url)}" />
       <button type="button" class="btn small" id="btn-link-kopieren">Kopieren</button></div>` :
       `<p class="hinweis fehler">Für diesen Vorgang liegt kein Link vor. Möglicherweise fehlt das Bearbeiten-Recht.</p>`}
     <p class="muted">Gültig bis ${n && n.gueltigBis ? escapeHtml(fmtZeitstempel(n.gueltigBis)) : "—"}.</p>

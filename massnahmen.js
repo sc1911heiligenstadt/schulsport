@@ -149,23 +149,23 @@ function oeffneMassnahme(id) {
   document.getElementById("massnahme-formular").innerHTML = `
     <div class="form-grid wide">
       <div class="form-field">
-        <label>Bezeichnung</label>
+        <label for="f-titel">Bezeichnung</label>
         <input type="text" id="f-titel" maxlength="120" value="${escapeHtml(m.titel)}" placeholder="z. B. Fußball-AG Klasse 1–2" />
       </div>
       <div class="form-field">
-        <label>Schule</label>
+        <label for="f-schule">Schule</label>
         <select id="f-schule"><option value="">Bitte wählen</option>${schulOpt}</select>
       </div>
       <div class="form-field">
-        <label>Ort</label>
+        <label for="f-ort">Ort</label>
         <select id="f-ort"><option value="">Bitte wählen</option>${ortOpt}</select>
       </div>
       <div class="form-field">
-        <label>Rahmen</label>
+        <label for="f-rahmen">Rahmen</label>
         <select id="f-rahmen">${rahmenOpt}</select>
       </div>
       <div class="form-field">
-        <label>Zielgruppe</label>
+        <label for="f-zielgruppe">Zielgruppe</label>
         <input type="text" id="f-zielgruppe" maxlength="80" value="${escapeHtml(m.zielgruppe)}" placeholder="z. B. Klasse 1–2" />
       </div>
     </div>
@@ -173,19 +173,19 @@ function oeffneMassnahme(id) {
     <h3 style="margin-top:16px;">Wann findet die Maßnahme statt?</h3>
     <div class="form-grid">
       <div class="form-field">
-        <label>Beginn</label>
+        <label for="f-von">Beginn</label>
         <input type="date" id="f-von" value="${escapeHtml(m.regel.startDatum || "")}" />
       </div>
       <div class="form-field">
-        <label>Ende</label>
+        <label for="f-bis">Ende</label>
         <input type="date" id="f-bis" value="${escapeHtml(m.regel.endDatum || "")}" />
       </div>
       <div class="form-field">
-        <label>Von</label>
+        <label for="f-startzeit">Von</label>
         <input type="time" id="f-startzeit" value="${escapeHtml(m.regel.startZeit || "")}" />
       </div>
       <div class="form-field">
-        <label>Bis</label>
+        <label for="f-endzeit">Bis</label>
         <input type="time" id="f-endzeit" value="${escapeHtml(m.regel.endZeit || "")}" />
       </div>
     </div>
@@ -201,15 +201,15 @@ function oeffneMassnahme(id) {
     <h3 style="margin-top:16px;">Wer führt durch?</h3>
     <div class="form-grid">
       <div class="form-field">
-        <label>Verantwortlich</label>
+        <label for="f-verantwortlich">Verantwortlich</label>
         <select id="f-verantwortlich"><option value="">Bitte wählen</option>${personOpt}</select>
       </div>
       <div class="form-field">
-        <label>Vorbereitung (Minuten)</label>
+        <label for="f-vor">Vorbereitung (Minuten)</label>
         <input type="number" id="f-vor" min="0" max="480" value="${escapeHtml(m.vorbereitungMin || 0)}" />
       </div>
       <div class="form-field">
-        <label>Nachbereitung (Minuten)</label>
+        <label for="f-nach">Nachbereitung (Minuten)</label>
         <input type="number" id="f-nach" min="0" max="480" value="${escapeHtml(m.nachbereitungMin || 0)}" />
       </div>
     </div>
@@ -218,16 +218,16 @@ function oeffneMassnahme(id) {
 
     <h3 style="margin-top:16px;">Material und Sonstiges</h3>
     <div class="form-field">
-      <label>Vom Verein mitzubringen (mit Komma trennen)</label>
+      <label for="f-mitbringen">Vom Verein mitzubringen (mit Komma trennen)</label>
       <input type="text" id="f-mitbringen" value="${escapeHtml((m.mitbringen || []).join(", "))}" placeholder="Leibchen, Hütchen, Bälle" />
     </div>
     <div class="form-field">
-      <label>Notiz</label>
+      <label for="f-notiz">Notiz</label>
       <textarea id="f-notiz" maxlength="1000">${escapeHtml(m.notiz || "")}</textarea>
     </div>
     <div class="form-grid">
       <div class="form-field">
-        <label>Status</label>
+        <label for="f-status">Status</label>
         <select id="f-status">
           <option value="geplant"${m.status === "geplant" ? " selected" : ""}>Geplant</option>
           <option value="laufend"${m.status === "laufend" ? " selected" : ""}>Laufend</option>
@@ -367,7 +367,7 @@ function oeffneAbgleich(massnahmeId) {
   document.getElementById("abgleich-inhalt").innerHTML = `
     <p class="muted">Die Termine von „${escapeHtml(m.titel)}“ werden nach der hinterlegten Regel neu erzeugt.</p>
     <div class="form-field" style="margin-top:12px;">
-      <label>Ab welchem Tag soll neu geplant werden?</label>
+      <label for="f-stichtag">Ab welchem Tag soll neu geplant werden?</label>
       <input type="date" id="f-stichtag" value="${escapeHtml(stichtagVorschlag)}" />
     </div>
     <p class="muted">Alles vor diesem Tag bleibt unverändert — ebenso jeder bereits gemeldete Termin, auch ein künftiger.</p>
@@ -455,23 +455,23 @@ function oeffneSchulForm(id) {
   document.getElementById("schule-form").innerHTML = `
     <h2>${id ? "Schule bearbeiten" : "Neue Schule"}</h2>
     <div class="form-grid wide">
-      <div class="form-field"><label>Name</label><input type="text" id="s-name" value="${escapeHtml(s.name)}" /></div>
-      <div class="form-field"><label>Kürzel (fürs Wochenraster)</label><input type="text" id="s-kurz" maxlength="12" value="${escapeHtml(s.kurz)}" /></div>
-      <div class="form-field"><label>Farbe</label><select id="s-farbe">${SCHUL_FARBEN.map((f) =>
+      <div class="form-field"><label for="s-name">Name</label><input type="text" id="s-name" value="${escapeHtml(s.name)}" /></div>
+      <div class="form-field"><label for="s-kurz">Kürzel (fürs Wochenraster)</label><input type="text" id="s-kurz" maxlength="12" value="${escapeHtml(s.kurz)}" /></div>
+      <div class="form-field"><label for="s-farbe">Farbe</label><select id="s-farbe">${SCHUL_FARBEN.map((f) =>
         `<option value="${f}"${s.farbe === f ? " selected" : ""}>${f}</option>`).join("")}</select></div>
-      <div class="form-field"><label>Straße</label><input type="text" id="s-strasse" value="${escapeHtml(s.strasse)}" /></div>
-      <div class="form-field"><label>PLZ</label><input type="text" id="s-plz" maxlength="5" value="${escapeHtml(s.plz)}" /></div>
-      <div class="form-field"><label>Ort</label><input type="text" id="s-ort" value="${escapeHtml(s.ort)}" /></div>
+      <div class="form-field"><label for="s-strasse">Straße</label><input type="text" id="s-strasse" value="${escapeHtml(s.strasse)}" /></div>
+      <div class="form-field"><label for="s-plz">PLZ</label><input type="text" id="s-plz" maxlength="5" value="${escapeHtml(s.plz)}" /></div>
+      <div class="form-field"><label for="s-ort">Ort</label><input type="text" id="s-ort" value="${escapeHtml(s.ort)}" /></div>
     </div>
     <h3>Ansprechpartner</h3>
     <div class="form-grid wide">
-      <div class="form-field"><label>Name</label><input type="text" id="s-ap-name" value="${escapeHtml(ap.name || "")}" /></div>
-      <div class="form-field"><label>Funktion</label><input type="text" id="s-ap-funktion" value="${escapeHtml(ap.funktion || "")}" /></div>
-      <div class="form-field"><label>Telefon</label><input type="tel" id="s-ap-telefon" value="${escapeHtml(ap.telefon || "")}" /></div>
-      <div class="form-field"><label>E-Mail</label><input type="email" id="s-ap-email" value="${escapeHtml(ap.email || "")}" /></div>
+      <div class="form-field"><label for="s-ap-name">Name</label><input type="text" id="s-ap-name" value="${escapeHtml(ap.name || "")}" /></div>
+      <div class="form-field"><label for="s-ap-funktion">Funktion</label><input type="text" id="s-ap-funktion" value="${escapeHtml(ap.funktion || "")}" /></div>
+      <div class="form-field"><label for="s-ap-telefon">Telefon</label><input type="tel" id="s-ap-telefon" value="${escapeHtml(ap.telefon || "")}" /></div>
+      <div class="form-field"><label for="s-ap-email">E-Mail</label><input type="email" id="s-ap-email" value="${escapeHtml(ap.email || "")}" /></div>
     </div>
     <div class="form-field">
-      <label>E-Mail für Bestätigungslinks</label>
+      <label for="s-best-email">E-Mail für Bestätigungslinks</label>
       <input type="email" id="s-best-email" value="${escapeHtml(s.bestaetigungEmail || "")}" placeholder="sekretariat@…" />
     </div>
     <p class="muted">An diese Adresse geht der Link, mit dem die Schule einen Durchführungsnachweis bestätigt. Bleibt sie leer, lässt sich der Link nur von Hand weitergeben.</p>
@@ -547,21 +547,21 @@ function oeffneOrtForm(id) {
   document.getElementById("ort-form").innerHTML = `
     <h2>${id ? "Ort bearbeiten" : "Neuer Ort"}</h2>
     <div class="form-grid wide">
-      <div class="form-field"><label>Name</label><input type="text" id="o-name" value="${escapeHtml(o.name)}" placeholder="z. B. Turnhalle Nord" /></div>
-      <div class="form-field"><label>Gehört zu</label><select id="o-schule"><option value="">vereinseigen</option>${
+      <div class="form-field"><label for="o-name">Name</label><input type="text" id="o-name" value="${escapeHtml(o.name)}" placeholder="z. B. Turnhalle Nord" /></div>
+      <div class="form-field"><label for="o-schule">Gehört zu</label><select id="o-schule"><option value="">vereinseigen</option>${
         (appData.schulen || []).map((s) => `<option value="${escapeHtml(s.id)}"${o.schuleId === s.id ? " selected" : ""}>${escapeHtml(s.name)}</option>`).join("")}</select></div>
-      <div class="form-field"><label>Art</label><select id="o-art">${ORT_ARTEN.map((a) =>
+      <div class="form-field"><label for="o-art">Art</label><select id="o-art">${ORT_ARTEN.map((a) =>
         `<option value="${escapeHtml(a.id)}"${o.art === a.id ? " selected" : ""}>${escapeHtml(a.name)}</option>`).join("")}</select></div>
     </div>
     <p class="muted">Anschrift nur ausfüllen, wenn sie von der Schule abweicht.</p>
     <div class="form-grid">
-      <div class="form-field"><label>Straße</label><input type="text" id="o-strasse" value="${escapeHtml(o.strasse)}" /></div>
-      <div class="form-field"><label>PLZ</label><input type="text" id="o-plz" maxlength="5" value="${escapeHtml(o.plz)}" /></div>
-      <div class="form-field"><label>Ort</label><input type="text" id="o-ort" value="${escapeHtml(o.ort)}" /></div>
+      <div class="form-field"><label for="o-strasse">Straße</label><input type="text" id="o-strasse" value="${escapeHtml(o.strasse)}" /></div>
+      <div class="form-field"><label for="o-plz">PLZ</label><input type="text" id="o-plz" maxlength="5" value="${escapeHtml(o.plz)}" /></div>
+      <div class="form-field"><label for="o-ort">Ort</label><input type="text" id="o-ort" value="${escapeHtml(o.ort)}" /></div>
     </div>
-    <div class="form-field"><label>Zugang</label><input type="text" id="o-zugang" value="${escapeHtml(o.zugang)}" placeholder="Wie kommt man hinein?" /></div>
-    <div class="form-field"><label>Schlüssel</label><input type="text" id="o-schluessel" value="${escapeHtml(o.schluessel)}" placeholder="Wer hat den Schlüssel?" /></div>
-    <div class="form-field"><label>Vor Ort vorhanden (mit Komma trennen)</label>
+    <div class="form-field"><label for="o-zugang">Zugang</label><input type="text" id="o-zugang" value="${escapeHtml(o.zugang)}" placeholder="Wie kommt man hinein?" /></div>
+    <div class="form-field"><label for="o-schluessel">Schlüssel</label><input type="text" id="o-schluessel" value="${escapeHtml(o.schluessel)}" placeholder="Wer hat den Schlüssel?" /></div>
+    <div class="form-field"><label for="o-ausstattung">Vor Ort vorhanden (mit Komma trennen)</label>
       <input type="text" id="o-ausstattung" value="${escapeHtml((o.ausstattung || []).join(", "))}" placeholder="Tore klein, Matten, Bälle" /></div>
     <div class="btn-row" style="justify-content:flex-start;">
       <button type="button" class="btn success" id="btn-ort-speichern">Speichern</button>
@@ -620,12 +620,12 @@ function renderAdminSperrtage(el) {
     <h2>Ferien, Feiertage und Schließtage</h2>
     <p class="muted">AG-Termine fallen an diesen Tagen weg. Ein Eintrag ohne Schule gilt für alle.</p>
     <div class="form-grid wide">
-      <div class="form-field"><label>Bezeichnung</label><input type="text" id="sp-name" placeholder="z. B. Projektwoche" /></div>
-      <div class="form-field"><label>Art</label><select id="sp-art">${SPERRTAG_ARTEN.map((a) =>
+      <div class="form-field"><label for="sp-name">Bezeichnung</label><input type="text" id="sp-name" placeholder="z. B. Projektwoche" /></div>
+      <div class="form-field"><label for="sp-art">Art</label><select id="sp-art">${SPERRTAG_ARTEN.map((a) =>
         `<option value="${escapeHtml(a.id)}">${escapeHtml(a.name)}</option>`).join("")}</select></div>
-      <div class="form-field"><label>Von</label><input type="date" id="sp-von" /></div>
-      <div class="form-field"><label>Bis</label><input type="date" id="sp-bis" /></div>
-      <div class="form-field"><label>Nur für</label><select id="sp-schule"><option value="">alle Schulen</option>${
+      <div class="form-field"><label for="sp-von">Von</label><input type="date" id="sp-von" /></div>
+      <div class="form-field"><label for="sp-bis">Bis</label><input type="date" id="sp-bis" /></div>
+      <div class="form-field"><label for="sp-schule">Nur für</label><select id="sp-schule"><option value="">alle Schulen</option>${
         (appData.schulen || []).map((s) => `<option value="${escapeHtml(s.id)}">${escapeHtml(s.name)}</option>`).join("")}</select></div>
     </div>
     <div class="btn-row" style="justify-content:flex-start;">
@@ -677,7 +677,7 @@ function renderAdminGruende(el) {
     <h2>Ausfallgründe</h2>
     <p class="muted">Diese Gründe stehen beim Melden zur Auswahl. Der Nachweis schlüsselt die Ausfälle danach auf — und trennt, was dem Verein zur Last fällt.</p>
     <div class="form-grid">
-      <div class="form-field"><label>Bezeichnung</label><input type="text" id="ag-name" placeholder="z. B. Halle gesperrt" /></div>
+      <div class="form-field"><label for="ag-name">Bezeichnung</label><input type="text" id="ag-name" placeholder="z. B. Halle gesperrt" /></div>
     </div>
     <label class="check-zeile"><input type="checkbox" id="ag-vv" /> Fällt dem Verein zur Last</label>
     <div class="btn-row" style="justify-content:flex-start;">
