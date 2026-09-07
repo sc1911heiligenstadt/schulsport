@@ -125,7 +125,111 @@ const SCHULJAHR_BEGINN_MONAT = 8;
 // Änderungsliste
 // ---------------------------------------------------------------------------
 
+// Was der Schulsport-Planer kann -- steht im Info-Reiter als Karte "Funktionen".
+// WICHTIG: Das ist NICHT der Changelog. Hier steht der ZUSTAND ("Ferien fallen
+// automatisch weg"), dort die Aenderung ("Ferien fallen JETZT weg"). Wer eine
+// Funktion umbaut oder abschaltet, zieht diesen Text mit -- und ebenso
+// E:\SC1911-Tools-Anleitung.txt, wo dasselbe ausfuehrlich steht.
+const APP_FUNKTIONEN = [
+  {
+    title: "Wofür der Planer da ist",
+    items: [
+      "Der Planer deckt allein die Sport- und Fußball-AGs ab, die der Verein an Schulen und im Hort anbietet.",
+      "Ferien-Camps gehören nicht hierher, sondern in das eigene Werkzeug „Fußballcamp“.",
+      "Am Ende steht der Durchführungsnachweis — das Dokument, das Behörden und Fördermittelgeber verlangen."
+    ]
+  },
+  {
+    title: "AGs als Serie anlegen",
+    items: [
+      "Eine AG wird einmal angelegt: Schule, Ort, Wochentag, Uhrzeit und Zeitraum. Alle Termine des Schuljahres entstehen daraus von selbst.",
+      "Ferien, Feiertage und Schließtage sind hinterlegt; an diesen Tagen fällt ein AG-Termin automatisch weg.",
+      "Verschiebt sich eine AG mitten im Schuljahr, wird erst ab einem gewählten Stichtag neu geplant. Was stattgefunden hat und was gemeldet wurde, bleibt unangetastet."
+    ]
+  },
+  {
+    title: "Wochenplan",
+    items: [
+      "Der Wochenplan zeigt Montag bis Freitag nebeneinander, jede Schule in ihrer eigenen Farbe. Samstag und Sonntag erscheinen nur, wenn dort wirklich etwas stattfindet.",
+      "Am Computer steht der Tagesverlauf als Zeitraster, am Handy als Tagesliste — ein Raster mit fünf Spalten ist auf einem kleinen Bildschirm nicht lesbar.",
+      "Vor- und Nachbereitungszeiten stehen am Termin, damit klar ist, ab wann jemand vor Ort sein muss. Zusätzliche Arbeitszeiten lassen sich an jedem beliebigen Tag eintragen."
+    ]
+  },
+  {
+    title: "Melden nach der Einheit",
+    items: [
+      "Nach jeder Einheit wird gemeldet, ob sie stattgefunden hat und wie viele Kinder da waren. Am Handy geht das in drei Griffen.",
+      "Fällt eine Einheit aus, wird der Grund aus einer Liste gewählt. Die Liste trennt, was dem Verein zur Last fällt, von allem anderen — genau die Unterscheidung, nach der eine Behörde fragt.",
+      "Der Reiter „Melden“ zeigt oben, wie viele eigene Termine noch auf eine Meldung warten.",
+      "Zu jedem Termin stehen Ort, Zugang und Ausstattung sowie das, was aus dem Vereinsheim mitzunehmen ist — damit auch eine Vertretung zurechtkommt."
+    ]
+  },
+  {
+    title: "Durchführungsnachweis",
+    items: [
+      "Aus den Meldungen entsteht auf Knopfdruck ein PDF: Schule, Ort, Ansprechpartner, jeder einzelne Termin mit Datum und Teilnehmerzahl, dazu die Summen und die geleisteten Stunden.",
+      "Eine Sammelübersicht fasst alle Maßnahmen eines Zeitraums auf einem Blatt zusammen.",
+      "Ausgestellte Nachweise stehen als eigene Liste im Reiter „Nachweise“."
+    ]
+  },
+  {
+    title: "Bestätigung durch die Schule",
+    items: [
+      "Die Schule bekommt einen Link, sieht dort die Aufstellung und unterschreibt am Bildschirm. Ein Zugang zu den Vereins-Tools ist dafür nicht nötig.",
+      "Ein bestätigter Nachweis ist eingefroren: Eine später korrigierte Teilnehmerzahl ändert das unterschriebene Dokument nicht mehr.",
+      "Stimmt etwas nicht, stellt die Schule statt der Unterschrift eine Rückfrage — sie landet direkt in der Übersicht der Leitung.",
+      "Ein Bestätigungslink läuft nach 30 Tagen ab und lässt sich zurückziehen, verlängern oder neu ausstellen."
+    ]
+  },
+  {
+    title: "Kennzahlen",
+    items: [
+      "Der Reiter „Übersicht“ rechnet einen frei gewählten Zeitraum oder ein ganzes Schuljahr durch.",
+      "Die Durchführungsquote misst gegen die geplanten Einheiten. Termine ohne Meldung und verschobene Termine fallen nicht heraus, sondern stehen als eigene Zahl daneben."
+    ]
+  },
+  {
+    title: "Verwaltung",
+    items: [
+      "Schulen und Orte pflegen; jede Schule bekommt ihre eigene Farbe im Wochenplan.",
+      "Ferien, Feiertage und Schließtage hinterlegen und die Liste der Ausfallgründe erweitern.",
+      "Ein abgeschlossenes Schuljahr wandert ins Archiv, damit die laufende Datei klein und schnell bleibt. Ausgestellte Nachweise bleiben dabei erhalten."
+    ]
+  },
+  {
+    title: "Wer was darf",
+    items: [
+      "Sehen: Wochenplan, Maßnahmen und Kennzahlen — für die Leitung, die Geschäftsstelle und alle eingesetzten Übungsleiter.",
+      "Melden darf jeder, der im Team einer Maßnahme steht; ein Bearbeiten-Recht braucht es dafür nicht. Fremde Maßnahmen sind serverseitig gesperrt, nicht nur ausgeblendet.",
+      "Bearbeiten: Maßnahmen anlegen und ändern, Termine neu erzeugen, Nachweise erstellen und den Bestätigungslink vergeben.",
+      "Administrieren: Ferien, Ausfallgründe und der Abschluss eines Schuljahres im Reiter „Verwaltung“."
+    ]
+  },
+  {
+    title: "Daten und Grenzen",
+    items: [
+      "Von den teilnehmenden Kindern wird ausschließlich die Anzahl erfasst. Namen von Schülerinnen und Schülern speichert der Planer nicht.",
+      "Von der bestätigenden Person an der Schule werden Name, Funktion, Unterschrift und Zeitpunkt festgehalten — als Nachweis der erbrachten Leistung.",
+      "Gespeichert wird in der Vereins-Nextcloud über die zentrale Anmeldung der Tools-Übersicht; ein eigenes Passwort braucht es nicht.",
+      "Fällt die Anmeldung weg, während die App offen ist, räumt der Planer den Bildschirm, statt AGs, Termine und Nachweise lesbar stehen zu lassen."
+    ]
+  }
+];
+
 const APP_CHANGELOG = [
+  {
+    version: "1.7",
+    groups: [
+      {
+        title: "Im Info-Reiter steht jetzt, was die App kann",
+        items: [
+          "Die Liste der Änderungen und die Versionsnummer sind aus dem Info-Reiter verschwunden.",
+          "Stattdessen steht dort die Karte „Funktionen“: was der Planer kann, nach Themen geordnet.",
+          "Was sich geändert hat, steht weiterhin in den Neuigkeiten auf der Startseite der Tools-Übersicht."
+        ]
+      }
+    ]
+  },
   {
     version: "1.6",
     groups: [
